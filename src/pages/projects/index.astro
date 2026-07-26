@@ -19,7 +19,7 @@ const projects = (await getCollection("projects")).sort(
                         <section class="border-b border-gray-200 dark:border-gray-800 pb-8 last:border-0">
                             <h2 class="text-2xl font-semibold mb-2">
                                 <a
-                                    href={`${import.meta.env.BASE_URL}/projects/${project.id}`}
+                                    href={`/projects/${project.id}`}
                                     class="hover:text-blue-500 transition-colors"
                                 >
                                     {project.data.title}
@@ -30,7 +30,7 @@ const projects = (await getCollection("projects")).sort(
                             </p>
                             <div class="flex gap-4">
                                 <a
-                                    href={`${import.meta.env.BASE_URL}/projects/${project.id}`}
+                                    href={`/projects/${project.id}`}
                                     class="text-sm font-medium text-blue-500 hover:underline"
                                 >
                                     Read more →

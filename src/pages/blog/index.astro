@@ -29,7 +29,7 @@ const posts = (await getCollection("blog")).sort(
                             </time>
                             <h2 class="text-2xl font-semibold">
                                 <a
-                                    href={`${import.meta.env.BASE_URL}/blog/${post.id}`}
+                                    href={`/blog/${post.id}`}
                                     class="hover:text-blue-500 transition-colors"
                                 >
                                     {post.data.title}
