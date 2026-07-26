@@ -1,0 +1,23 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+@custom-variant dark (&:where(.dark, .dark *));
+
+::selection {
+    background-color: #b4befe;
+    color: #1e1e2e;
+}
+
+.dark ::selection {
+    background-color: #cba6f7;
+    color: #1e1e2e;
+}
+
+:root {
+    --bg: #f5f5f5;
+    --text: #333333;
+}
+
+.dark {
+    --bg: #1e1e2e;
+    --text: #cdd6f4;
+}

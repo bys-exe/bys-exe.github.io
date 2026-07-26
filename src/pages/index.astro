@@ -1,0 +1,25 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Header from "../components/Header.astro";
+---
+
+<BaseLayout title="About Me - Yuga Sai" showFooterRedirect={false}>
+    <div class="max-w-2xl mx-auto px-4">
+        <Header />
+        <main class="py-8">
+            <div class="flex items-center gap-4 mb-8">
+                <img
+                    src="/images/pfp.jpg"
+                    alt="Yuga Sai"
+                    class="w-16 h-16 rounded-full border-2 border-gray-300 dark:border-gray-600"
+                />
+                <h1 class="text-3xl font-bold">Hi, I'm Yuga Sai</h1>
+            </div>
+            <p class="mb-4">
+                I am an 18-year-old developer currently studying in my second
+                year of Computer Science at Jain University. Im currently still figuring out what excites me :P
+            </p>
+
+        </main>
+    </div>
+</BaseLayout>

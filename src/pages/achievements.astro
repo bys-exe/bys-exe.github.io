@@ -1,0 +1,95 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Header from "../components/Header.astro";
+
+const achievements = [
+    {
+        title: "Runner-Up – Treasure Hunt 2026",
+        organization: "Infosphere Club, Jain University",
+        description:
+            "Secured the Runner-Up position in 'Treasure Hunt – A Fusion of Technical & Fun Elements', a competition involving technical challenges, logical puzzles, and teamwork under time pressure.",
+        date: "2026",
+        link: "https://www.linkedin.com/posts/batchu-yuga-sai-68418136b_jainuniversity-infosphere-treasurehunt-ugcPost-7427668556416241665-5BKo/",
+    },
+];
+
+const certifications = [
+    {
+        title: "NVIDIA Networking Certification",
+        organization: "NVIDIA",
+        description:
+            "Certification in networking technologies provided by NVIDIA.",
+        date: "February 2026",
+        link: "/certificates/nvidia-networking.pdf",
+    },
+];
+---
+
+<BaseLayout
+    title="Achievements & Certifications - Yuga Sai"
+    showFooterRedirect={true}
+>
+    <div class="max-w-2xl mx-auto px-4">
+        <Header />
+        <main class="py-8">
+            <section class="mb-12">
+                <h1 class="text-3xl font-bold mb-8">Achievements</h1>
+                <div class="space-y-8">
+                    {
+                        achievements.map((achievement) => (
+                            <div class="border-l-4 border-blue-500 pl-4 py-2">
+                                <h2 class="text-xl font-semibold">
+                                    {achievement.title}
+                                </h2>
+                                <p class="text-sm text-gray-500 mb-2">
+                                    {achievement.organization} •{" "}
+                                    {achievement.date}
+                                </p>
+                                <p class="text-gray-600 dark:text-gray-400 mb-2">
+                                    {achievement.description}
+                                </p>
+                                <a
+                                    href={achievement.link}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    class="text-sm text-blue-500 hover:underline"
+                                >
+                                    View post →
+                                </a>
+                            </div>
+                        ))
+                    }
+                </div>
+            </section>
+
+            <section>
+                <h1 class="text-3xl font-bold mb-8">Certifications</h1>
+                <div class="space-y-8">
+                    {
+                        certifications.map((cert) => (
+                            <div class="border-l-4 border-green-500 pl-4 py-2">
+                                <h2 class="text-xl font-semibold">
+                                    {cert.title}
+                                </h2>
+                                <p class="text-sm text-gray-500 mb-2">
+                                    {cert.organization} • {cert.date}
+                                </p>
+                                <p class="text-gray-600 dark:text-gray-400 mb-2">
+                                    {cert.description}
+                                </p>
+                                <a
+                                    href={cert.link}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    class="text-sm text-blue-500 hover:underline"
+                                >
+                                    View Certificate →
+                                </a>
+                            </div>
+                        ))
+                    }
+                </div>
+            </section>
+        </main>
+    </div>
+</BaseLayout>
