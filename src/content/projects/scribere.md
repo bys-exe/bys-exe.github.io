@@ -25,12 +25,6 @@ The terminal might look different depending on your system's styling.
 
 ![Scribere Search Functionality](https://raw.githubusercontent.com/bys-exe/scribere/main/media/screenshot-1.png)
 
-_Using find feature inside the editor_
-
 ![Scribere Code Editor view](https://raw.githubusercontent.com/bys-exe/scribere/main/media/screenshot-2.png)
 
-_Syntax highlighting for C_
-
 ![Scribere Undo System](https://raw.githubusercontent.com/bys-exe/scribere/main/media/screenshot-3.png)
-
-_The warning and notification panel_
