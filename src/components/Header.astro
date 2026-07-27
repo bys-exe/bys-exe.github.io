@@ -3,15 +3,15 @@ import ThemeSwitcher from "./ThemeSwitcher.astro";
 ---
 
 <header class="flex justify-center items-center py-6">
-    <div class="flex items-center gap-6">
-        <nav class="flex gap-4">
-            <a href="/" class="hover:text-blue-500">About</a>
-            <a href="/projects" class="hover:text-blue-500">Projects</a>
-            <a href="/blog" class="hover:text-blue-500">Blog</a>
-            <a href="/achievements" class="hover:text-blue-500">Achievements</a>
-            <a href="/contact" class="hover:text-blue-500">Contact</a>
+    <div class="flex flex-col sm:flex-row items-center gap-3 sm:gap-6">
+        <nav class="flex flex-wrap justify-center gap-x-4 gap-y-2 text-sm sm:text-base">
+            <a href="/" class="hover:text-[var(--accent)]">About</a>
+            <a href="/projects" class="hover:text-[var(--accent)]">Projects</a>
+            <a href="/blog" class="hover:text-[var(--accent)]">Blog</a>
+            <a href="/achievements" class="hover:text-[var(--accent)]">Achievements</a>
+            <a href="/contact" class="hover:text-[var(--accent)]">Contact</a>
         </nav>
-        <div class="ml-4">
+        <div class="sm:ml-4">
             <ThemeSwitcher />
         </div>
     </div>

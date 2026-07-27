@@ -33,12 +33,12 @@ const certifications = [
         <Header />
         <main class="py-8">
             <section class="mb-12">
-                <h1 class="text-3xl font-bold mb-8">Achievements</h1>
+                <h1 class="text-2xl sm:text-3xl font-bold mb-8">Achievements</h1>
                 <div class="space-y-8">
                     {
                         achievements.map((achievement) => (
-                            <div class="border-l-4 border-blue-500 pl-4 py-2">
-                                <h2 class="text-xl font-semibold">
+                            <div class="border-l-4 border-[var(--accent)] pl-4 py-2">
+                                <h2 class="text-lg sm:text-xl font-semibold">
                                     {achievement.title}
                                 </h2>
                                 <p class="text-sm text-gray-500 mb-2">
@@ -52,7 +52,7 @@ const certifications = [
                                     href={achievement.link}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    class="text-sm text-blue-500 hover:underline"
+                                    class="text-sm text-[var(--accent)] hover:underline"
                                 >
                                     View post →
                                 </a>
@@ -63,12 +63,12 @@ const certifications = [
             </section>
 
             <section>
-                <h1 class="text-3xl font-bold mb-8">Certifications</h1>
+                <h1 class="text-2xl sm:text-3xl font-bold mb-8">Certifications</h1>
                 <div class="space-y-8">
                     {
                         certifications.map((cert) => (
                             <div class="border-l-4 border-green-500 pl-4 py-2">
-                                <h2 class="text-xl font-semibold">
+                                <h2 class="text-lg sm:text-xl font-semibold">
                                     {cert.title}
                                 </h2>
                                 <p class="text-sm text-gray-500 mb-2">
@@ -81,7 +81,7 @@ const certifications = [
                                     href={cert.link}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    class="text-sm text-blue-500 hover:underline"
+                                    class="text-sm text-[var(--accent)] hover:underline"
                                 >
                                     View Certificate →
                                 </a>

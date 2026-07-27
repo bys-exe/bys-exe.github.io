@@ -12,7 +12,7 @@ import "../styles/global.css";
 <html lang="en" class="h-full">
     <head>
         <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/images/pfp.jpg" />
         <script is:inline>
             if (localStorage.theme !== "light") {
@@ -32,15 +32,12 @@ import "../styles/global.css";
                 showFooterRedirect && (
                     <a
                         href="/"
-                        class="text-sm text-gray-500 hover:text-blue-500"
+                        class="text-sm text-gray-500 hover:text-[var(--accent)]"
                     >
                         ← Back to About
                     </a>
                 )
             }
-            <p class="text-xs text-gray-400 mt-4">
-                Made with ♡ by bys
-            </p>
         </footer>
     </body>
 </html>

@@ -15,9 +15,33 @@
 :root {
     --bg: #f5f5f5;
     --text: #333333;
+    --accent: #FF6900;
+    --tw-prose-body: #333333;
+    --tw-prose-headings: #333333;
+    --tw-prose-bold: #333333;
+    --tw-prose-counters: #333333;
+    --tw-prose-quotes: #333333;
+    --tw-prose-kbd: #333333;
+    --tw-prose-code: #333333;
 }
 
 .dark {
     --bg: #1e1e2e;
     --text: #cdd6f4;
+    --accent: #cba6f7;
+    --tw-prose-invert-body: #cdd6f4;
+    --tw-prose-invert-headings: #cdd6f4;
+    --tw-prose-invert-bold: #cdd6f4;
+    --tw-prose-invert-counters: #cdd6f4;
+    --tw-prose-invert-quotes: #cdd6f4;
+    --tw-prose-invert-kbd: #cdd6f4;
+    --tw-prose-invert-code: #cdd6f4;
+}
+
+.prose a {
+    color: var(--accent);
+}
+
+a:hover {
+    text-decoration-style: dashed;
 }
