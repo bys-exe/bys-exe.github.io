@@ -1,0 +1,51 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Header from "../components/Header.astro";
+---
+
+<BaseLayout title="About Me - Yuga Sai" showFooterRedirect={true}>
+    <div class="max-w-2xl mx-auto px-4">
+        <Header />
+        <main class="py-8">
+            <h1 class="text-2xl sm:text-3xl font-bold mb-8">About</h1>
+            <p class="mb-4">
+                I am an 18-year-old developer currently studying CS at <a
+                    href="https://en.wikipedia.org/wiki/Jain_University"
+                    class="text-[var(--accent)] hover:underline"
+                    >Jain University</a
+                >. I'm currently still figuring out what excites me :P
+            </p>
+            <p class="mb-4">
+                I enjoy consuming all forms of art/ media and my entire
+                personality surrounds around it.
+            </p>
+            <p class="mb-4">
+                When i was a kid i was always fascinated by computers and
+                tinkered with them. I had a very old laptop with only 2gb ram
+                (currently my home server lol) and i was always trying to get
+                the most out of it and i even had a windows xp office computer
+                with which i played around alot and they made me love computers.
+            </p>
+            <p class="mb-4">
+                I'm new to making <a
+                    href="/blog"
+                    class="text-[var(--accent)] hover:underline">blogs</a
+                > and i hope people enjoy it :D and check out my <a
+                    href="/projects"
+                    class="text-[var(--accent)] hover:underline">projects</a
+                > if you are interested.
+            </p>
+
+            <section class="mt-12">
+                <h2 class="text-2xl font-bold mb-4">Experiences</h2>
+                <p class="mb-4">
+                    I currently have no experiences but i'm open to work! here's
+                    my <a
+                        href="/resume.pdf"
+                        class="text-[var(--accent)] hover:underline">resume</a
+                    >.
+                </p>
+            </section>
+        </main>
+    </div>
+</BaseLayout>

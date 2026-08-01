@@ -3,7 +3,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import Header from "../components/Header.astro";
 ---
 
-<BaseLayout title="About Me - Yuga Sai" showFooterRedirect={false}>
+<BaseLayout title="Home - Yuga Sai" showFooterRedirect={false}>
     <div class="max-w-2xl mx-auto px-4">
         <Header />
         <main class="py-8">
@@ -13,48 +13,27 @@ import Header from "../components/Header.astro";
                 <img
                     src="/images/pfp.jpg"
                     alt="Yuga Sai"
-                    class="w-16 h-16 rounded-full border-2 border-gray-300 dark:border-gray-600 shrink-0"
+                    class="w-32 h-32 rounded-full border-2 border-gray-300 dark:border-gray-600 shrink-0"
                 />
-                <h1 class="text-2xl sm:text-3xl font-bold">Hi, I'm Yuga Sai</h1>
+                <h1 class="text-2xl sm:text-3xl font-bold">
+                    Hallo, I'm yuga :>
+                </h1>
             </div>
+
+            <!-- write your homepage content here -->
             <p class="mb-4">
-                I am an 18-year-old developer currently studying CS at <a
-                    href="https://en.wikipedia.org/wiki/Jain_University"
-                    class="text-[var(--accent)] hover:underline"
-                    >Jain University</a
-                >. I'm currently still figuring out what excites me :P
-            </p>
-            <p class="mb-4">
-                I enjoy consuming all forms of art/ media and my entire
-                personality surrounds around it.
-            </p>
-            <p class="mb-4">
-                When i was a kid i was always fascinated by computers and
-                tinkered with them. I had a very old laptop with only 2gb ram
-                (currently my home server lol) and i was always trying to get
-                the most out of it and i even had a windows xp office computer
-                with which i played around alot and they made me love computers.
-            </p>
-            <p class="mb-4">
-                I'm new to making <a
-                    href="/blog"
-                    class="text-[var(--accent)] hover:underline">blogs</a
-                > and i hope people enjoy it :D and check out my <a
+                Welcome to my little corner of the internet. This page is still
+                a work in progress, but you can find my <a
+                    href="/about"
+                    class="text-[var(--accent)] hover:underline">about</a
+                >, <a
                     href="/projects"
                     class="text-[var(--accent)] hover:underline">projects</a
-                > if you are interested.
+                >, <a
+                    href="/blog"
+                    class="text-[var(--accent)] hover:underline">blog</a
+                >, and more around the site.
             </p>
-
-            <section class="mt-12">
-                <h2 class="text-2xl font-bold mb-4">Experiences</h2>
-                <p class="mb-4">
-                    I currently have no experiences but i'm open to work! here's
-                    my <a
-                        href="/resume.pdf"
-                        class="text-[var(--accent)] hover:underline">resume</a
-                    >.
-                </p>
-            </section>
         </main>
     </div>
 </BaseLayout>
