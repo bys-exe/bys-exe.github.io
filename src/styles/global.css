@@ -2,6 +2,33 @@
 @plugin "@tailwindcss/typography";
 @custom-variant dark (&:where(.dark, .dark *));
 
+@theme {
+    --font-sans:
+        "JetBrainsMono Nerd Font", ui-sans-serif, system-ui, sans-serif,
+        "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
+        "Noto Color Emoji";
+}
+
+@font-face {
+    font-family: "JetBrainsMono Nerd Font";
+    src:
+        local("JetBrainsMono Nerd Font"),
+        url("/fonts/JetBrainsMonoNerdFont-Regular.woff2") format("woff2");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "JetBrainsMono Nerd Font";
+    src:
+        local("JetBrainsMono Nerd Font"),
+        url("/fonts/JetBrainsMonoNerdFont-Bold.woff2") format("woff2");
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
 ::selection {
     background-color: #b4befe;
     color: #1e1e2e;
