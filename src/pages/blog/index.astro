@@ -12,8 +12,16 @@ const posts = (await getCollection("blog")).sort(
     <div class="max-w-2xl mx-auto px-4">
         <Header />
         <main class="py-8">
-            <h1 class="text-2xl sm:text-3xl font-bold mb-8">Blog</h1>
-            <ul class="space-y-8">
+            <div class="flex items-center justify-between gap-4 mb-8">
+                <h1 class="text-lg sm:text-xl font-bold">Blog</h1>
+                <input
+                    id="blog-search"
+                    type="search"
+                    placeholder="Search posts..."
+                    class="w-48 sm:w-56 px-3 py-1.5 text-sm rounded-lg border border-gray-300 dark:border-gray-700 bg-transparent text-[var(--text)] placeholder-gray-400 focus:outline-none focus:border-[var(--accent)]"
+                />
+            </div>
+            <ul id="blog-list" class="space-y-8">
                 {
                     posts.map((post) => (
                         <li>
@@ -27,7 +35,7 @@ const posts = (await getCollection("blog")).sort(
                                     day: "numeric",
                                 })}
                             </time>
-                            <h2 class="text-xl sm:text-2xl font-semibold">
+                            <h2 class="text-base sm:text-lg font-semibold">
                                 <a
                                     href={`/blog/${post.id}`}
                                     class="hover:text-[var(--accent)] transition-colors"
@@ -45,3 +53,15 @@ const posts = (await getCollection("blog")).sort(
         </main>
     </div>
 </BaseLayout>
+
+<script>
+    const searchInput = document.getElementById("blog-search");
+    const list = document.getElementById("blog-list");
+    searchInput.addEventListener("input", () => {
+        const query = searchInput.value.trim().toLowerCase();
+        for (const item of list.querySelectorAll("li")) {
+            const title = item.querySelector("h2")?.textContent?.toLowerCase() ?? "";
+            item.style.display = title.includes(query) ? "" : "none";
+        }
+    });
+</script>

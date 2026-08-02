@@ -1,6 +1,6 @@
 ---
 title: How a compiler works
-description: Brief Step by step of how a compiler/Interpreter works
+description: Brief Step by step of how a compiler/interpreter works
 pubDate: 2026-07-27
 ---
 

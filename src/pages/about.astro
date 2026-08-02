@@ -1,25 +1,11 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Header from "../components/Header.astro";
-import LastFM from "../components/LastFM.astro";
 ---
 
 <BaseLayout title="About Me - Yuga Sai" showFooterRedirect={true}>
     <div class="max-w-2xl mx-auto px-4">
-        <LastFM />
         <Header />
-        <div class="fixed bottom-4 left-4 z-50 flex flex-col items-start">
-            <p
-                class="text-[10px] uppercase tracking-widest text-[var(--text-muted)] mb-[5px]"
-            >
-                Visitor count
-            </p>
-            <img
-                id="visitors-counter"
-                src="https://count.getloli.com/@bys-site?name=bys-site&theme=original-new&padding=4&offset=0&align=top&scale=0.5&pixelated=1&darkmode=auto"
-                alt="Visitors counter"
-            />
-        </div>
         <main class="py-8">
             <h1 class="text-2xl sm:text-3xl font-bold mb-8">About</h1>
             <p class="mb-4">
@@ -52,24 +38,3 @@ import LastFM from "../components/LastFM.astro";
         </main>
     </div>
 </BaseLayout>
-
-<script>
-    const counter = document.getElementById(
-        "visitors-counter",
-    ) as HTMLImageElement | null;
-    if (counter) {
-        const syncTheme = () => {
-            const dark = document.documentElement.classList.contains("dark");
-            const mode = dark ? "1" : "0";
-            counter.src = counter.src.replace(
-                /darkmode=\w+/,
-                `darkmode=${mode}`,
-            );
-        };
-        syncTheme();
-        new MutationObserver(syncTheme).observe(document.documentElement, {
-            attributes: true,
-            attributeFilter: ["class"],
-        });
-    }
-</script>

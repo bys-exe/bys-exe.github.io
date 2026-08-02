@@ -5,6 +5,7 @@ interface Props {
 }
 
 const { title, showFooterRedirect = true } = Astro.props;
+const isHome = Astro.url.pathname === "/";
 import "../styles/global.css";
 ---
 
@@ -38,6 +39,43 @@ import "../styles/global.css";
                     </a>
                 )
             }
+            {
+                isHome && (
+                    <div class="mt-6 flex flex-col items-center">
+                        <p
+                            class="text-[10px] uppercase tracking-widest text-[var(--text-muted)] mb-[5px]"
+                        >
+                            Visitor count
+                        </p>
+                        <img
+                            id="visitors-counter"
+                            src="https://count.getloli.com/@bys-site?name=bys-site&theme=original-new&padding=4&offset=0&align=top&scale=0.5&pixelated=1&darkmode=auto"
+                            alt="Visitors counter"
+                        />
+                    </div>
+                )
+            }
         </footer>
     </body>
 </html>
+
+<script>
+    const counter = document.getElementById(
+        "visitors-counter",
+    ) as HTMLImageElement | null;
+    if (counter) {
+        const syncTheme = () => {
+            const dark = document.documentElement.classList.contains("dark");
+            const mode = dark ? "1" : "0";
+            counter.src = counter.src.replace(
+                /darkmode=\w+/,
+                `darkmode=${mode}`,
+            );
+        };
+        syncTheme();
+        new MutationObserver(syncTheme).observe(document.documentElement, {
+            attributes: true,
+            attributeFilter: ["class"],
+        });
+    }
+</script>

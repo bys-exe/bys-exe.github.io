@@ -1,0 +1,107 @@
+---
+const badges = [
+    {
+        href: "https://bys-exe.github.io/",
+        alt: "bys_exe",
+        src: "/badges/bys-exe.png",
+    },
+    {
+        href: "https://catppuccin.com/",
+        alt: "Catppuccin",
+        src: "https://jotalea.com.ar/assets/88x31/catppuccin-animated.gif",
+    },
+    {
+        href: "https://zen-browser.app/",
+        alt: "Zen Browser",
+        src: "/badges/zen-button.png",
+    },
+];
+---
+
+<div class="overflow-hidden pt-4">
+    <div class="badge-track flex w-max">
+        <div class="flex gap-3 px-1.5">
+            {
+                badges.map((badge) => (
+                    <a
+                        href={badge.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        title={badge.alt}
+                    >
+                        {
+                            badge.src ? (
+                                <img
+                                    src={badge.src}
+                                    alt={badge.alt}
+                                    width="88"
+                                    height="31"
+                                    class="image-rendering-pixelated shrink-0"
+                                />
+                            ) : (
+                                <span
+                                    class="flex h-[31px] w-[88px] items-center justify-center border border-gray-300 dark:border-gray-700 bg-[var(--bg)] text-[8px] font-bold tracking-wide text-[var(--text)]"
+                                >
+                                    {badge.alt}
+                                </span>
+                            )
+                        }
+                    </a>
+                ))
+            }
+        </div>
+        <div class="flex gap-3 px-1.5" aria-hidden="true">
+            {
+                badges.map((badge) => (
+                    <a
+                        href={badge.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        tabindex="-1"
+                        title={badge.alt}
+                    >
+                        {
+                            badge.src ? (
+                                <img
+                                    src={badge.src}
+                                    alt=""
+                                    width="88"
+                                    height="31"
+                                    class="image-rendering-pixelated shrink-0"
+                                />
+                            ) : (
+                                <span
+                                    class="flex h-[31px] w-[88px] items-center justify-center border border-gray-300 dark:border-gray-700 bg-[var(--bg)] text-[8px] font-bold tracking-wide text-[var(--text)]"
+                                >
+                                    {badge.alt}
+                                </span>
+                            )
+                        }
+                    </a>
+                ))
+            }
+        </div>
+    </div>
+</div>
+
+<style>
+    .badge-track {
+        animation: badge-scroll 7s linear infinite;
+    }
+
+    .badge-track:hover {
+        animation-play-state: paused;
+    }
+
+    @keyframes badge-scroll {
+        to {
+            transform: translateX(-50%);
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .badge-track {
+            animation: none;
+        }
+    }
+</style>
