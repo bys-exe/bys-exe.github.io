@@ -61,13 +61,18 @@ const projects = (await getCollection("projects")).sort(
 </BaseLayout>
 
 <script>
-    const searchInput = document.getElementById("projects-search");
-    const list = document.getElementById("projects-list");
-    searchInput.addEventListener("input", () => {
-        const query = searchInput.value.trim().toLowerCase();
-        for (const item of list.querySelectorAll("section")) {
-            const title = item.querySelector("h2")?.textContent?.toLowerCase() ?? "";
-            item.style.display = title.includes(query) ? "" : "none";
-        }
-    });
+    const searchInput = document.getElementById(
+        "projects-search",
+    ) as HTMLInputElement | null;
+    const list = document.getElementById("projects-list")!;
+    if (searchInput) {
+        searchInput.addEventListener("input", () => {
+            const query = searchInput.value.trim().toLowerCase();
+            for (const item of list.querySelectorAll("section")) {
+                const title =
+                    item.querySelector("h2")?.textContent?.toLowerCase() ?? "";
+                item.style.display = title.includes(query) ? "" : "none";
+            }
+        });
+    }
 </script>

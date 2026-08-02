@@ -5,7 +5,9 @@
     <p
         id="lastfm-status"
         class="text-[10px] uppercase tracking-widest text-[var(--text-muted)] mb-2"
-    ></p>
+    >
+        listening now
+    </p>
     <a
         id="lastfm-track-link"
         href="#"
@@ -23,12 +25,16 @@
             <div class="min-w-0 flex-1">
                 <p
                     id="lastfm-title"
-                    class="text-sm font-bold truncate text-[var(--text)] group-hover:text-[var(--accent)] transition-colors"
-                ></p>
+                    class="text-sm font-bold overflow-hidden text-[var(--text)] group-hover:text-[var(--accent)] transition-colors"
+                >
+                    <span id="lastfm-title-inner" class="marquee-inner"></span>
+                </p>
                 <p
                     id="lastfm-artist"
-                    class="text-xs truncate text-[var(--text)]/70"
-                ></p>
+                    class="text-xs overflow-hidden text-[var(--text)]/70"
+                >
+                    <span id="lastfm-artist-inner" class="marquee-inner"></span>
+                </p>
                 <div
                     id="lastfm-progress-track"
                     class="mt-1.5 h-0.5 w-full bg-[var(--text)]/15 rounded-full overflow-hidden"
@@ -50,6 +56,24 @@
         animation: lastfm-indeterminate 1.4s ease-in-out infinite;
     }
 
+    .marquee-inner {
+        display: inline-block;
+        white-space: nowrap;
+    }
+
+    .marquee-inner.marquee-on {
+        animation: lastfm-marquee 6s linear infinite alternate;
+    }
+
+    @keyframes lastfm-marquee {
+        from {
+            transform: translateX(0);
+        }
+        to {
+            transform: translateX(var(--marquee-shift));
+        }
+    }
+
     @keyframes lastfm-indeterminate {
         0% {
             transform: translateX(-100%);
@@ -66,8 +90,8 @@
 
     const widget = document.getElementById("lastfm-widget")!;
     const cover = document.getElementById("lastfm-cover") as HTMLImageElement;
-    const title = document.getElementById("lastfm-title")!;
-    const artist = document.getElementById("lastfm-artist")!;
+    const titleInner = document.getElementById("lastfm-title-inner")!;
+    const artistInner = document.getElementById("lastfm-artist-inner")!;
     const trackLink = document.getElementById(
         "lastfm-track-link",
     ) as HTMLAnchorElement;
@@ -131,10 +155,20 @@
             return d;
         }
 
+        function updateMarquee(el: HTMLElement) {
+            const parent = el.parentElement!;
+            const overflow = el.scrollWidth > parent.clientWidth;
+            if (overflow) {
+                const shift = parent.clientWidth - el.scrollWidth;
+                el.style.setProperty("--marquee-shift", `${shift}px`);
+            }
+            el.classList.toggle("marquee-on", overflow);
+        }
+
         function render(track: any, playing: boolean) {
             const artistName = track.artist["#text"] || track.artist || "";
-            title.textContent = track.name || "";
-            artist.textContent = artistName;
+            titleInner.textContent = track.name || "";
+            artistInner.textContent = artistName;
             trackLink.href = track.url || "#";
             const coverUrl = pickCover(track.image);
             if (coverUrl) {
@@ -143,7 +177,9 @@
             } else {
                 cover.style.display = "none";
             }
-            status.textContent = playing ? "Now playing" : "Last played";
+            updateMarquee(titleInner);
+            updateMarquee(artistInner);
+            status.textContent = playing ? "listening now" : "last played";
         }
 
         function animate() {

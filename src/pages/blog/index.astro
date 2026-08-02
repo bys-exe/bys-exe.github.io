@@ -55,13 +55,18 @@ const posts = (await getCollection("blog")).sort(
 </BaseLayout>
 
 <script>
-    const searchInput = document.getElementById("blog-search");
-    const list = document.getElementById("blog-list");
-    searchInput.addEventListener("input", () => {
-        const query = searchInput.value.trim().toLowerCase();
-        for (const item of list.querySelectorAll("li")) {
-            const title = item.querySelector("h2")?.textContent?.toLowerCase() ?? "";
-            item.style.display = title.includes(query) ? "" : "none";
-        }
-    });
+    const searchInput = document.getElementById(
+        "blog-search",
+    ) as HTMLInputElement | null;
+    const list = document.getElementById("blog-list")!;
+    if (searchInput) {
+        searchInput.addEventListener("input", () => {
+            const query = searchInput.value.trim().toLowerCase();
+            for (const item of list.querySelectorAll("li")) {
+                const title =
+                    item.querySelector("h2")?.textContent?.toLowerCase() ?? "";
+                item.style.display = title.includes(query) ? "" : "none";
+            }
+        });
+    }
 </script>
