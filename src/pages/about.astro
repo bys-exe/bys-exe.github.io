@@ -1,11 +1,25 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Header from "../components/Header.astro";
+import LastFM from "../components/LastFM.astro";
 ---
 
 <BaseLayout title="About Me - Yuga Sai" showFooterRedirect={true}>
     <div class="max-w-2xl mx-auto px-4">
+        <LastFM />
         <Header />
+        <div class="fixed bottom-4 left-4 z-50 flex flex-col items-start">
+            <p
+                class="text-[10px] uppercase tracking-widest text-[var(--text-muted)] mb-[5px]"
+            >
+                Visitor count
+            </p>
+            <img
+                id="visitors-counter"
+                src="https://count.getloli.com/@bys-site?name=bys-site&theme=original-new&padding=4&offset=0&align=top&scale=0.5&pixelated=1&darkmode=auto"
+                alt="Visitors counter"
+            />
+        </div>
         <main class="py-8">
             <h1 class="text-2xl sm:text-3xl font-bold mb-8">About</h1>
             <p class="mb-4">
@@ -35,17 +49,27 @@ import Header from "../components/Header.astro";
                     class="text-[var(--accent)] hover:underline">projects</a
                 > if you are interested.
             </p>
-
-            <section class="mt-12">
-                <h2 class="text-2xl font-bold mb-4">Experiences</h2>
-                <p class="mb-4">
-                    I currently have no experiences but i'm open to work! here's
-                    my <a
-                        href="/resume.pdf"
-                        class="text-[var(--accent)] hover:underline">resume</a
-                    >.
-                </p>
-            </section>
         </main>
     </div>
 </BaseLayout>
+
+<script>
+    const counter = document.getElementById(
+        "visitors-counter",
+    ) as HTMLImageElement | null;
+    if (counter) {
+        const syncTheme = () => {
+            const dark = document.documentElement.classList.contains("dark");
+            const mode = dark ? "1" : "0";
+            counter.src = counter.src.replace(
+                /darkmode=\w+/,
+                `darkmode=${mode}`,
+            );
+        };
+        syncTheme();
+        new MutationObserver(syncTheme).observe(document.documentElement, {
+            attributes: true,
+            attributeFilter: ["class"],
+        });
+    }
+</script>

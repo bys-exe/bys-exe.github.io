@@ -1,0 +1,226 @@
+---
+---
+
+<div
+    id="lastfm-widget"
+    class="fixed top-5 left-4 z-50 max-w-[240px] hidden sm:block"
+>
+    <p
+        id="lastfm-status"
+        class="text-[10px] uppercase tracking-widest text-[var(--text-muted)] mb-2"
+    ></p>
+    <a
+        id="lastfm-track-link"
+        href="#"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="group block"
+    >
+        <div class="flex items-center gap-3">
+            <img
+                id="lastfm-cover"
+                src=""
+                alt=""
+                class="w-12 h-12 rounded-md object-cover shrink-0"
+            />
+            <div class="min-w-0 flex-1">
+                <p
+                    id="lastfm-title"
+                    class="text-sm font-bold truncate text-[var(--text)] group-hover:text-[var(--accent)] transition-colors"
+                ></p>
+                <p
+                    id="lastfm-artist"
+                    class="text-xs truncate text-[var(--text)]/70"
+                ></p>
+                <div
+                    id="lastfm-progress-track"
+                    class="mt-1.5 h-0.5 w-full bg-[var(--text)]/15 rounded-full overflow-hidden"
+                >
+                    <div
+                        id="lastfm-progress-fill"
+                        class="h-full bg-[var(--accent)] rounded-full"
+                        style="width: 0%"
+                    ></div>
+                </div>
+            </div>
+        </div>
+    </a>
+</div>
+
+<style>
+    #lastfm-progress-fill.indeterminate {
+        width: 40%;
+        animation: lastfm-indeterminate 1.4s ease-in-out infinite;
+    }
+
+    @keyframes lastfm-indeterminate {
+        0% {
+            transform: translateX(-100%);
+        }
+        100% {
+            transform: translateX(250%);
+        }
+    }
+</style>
+
+<script>
+    const API_KEY = import.meta.env.PUBLIC_LASTFM_API_KEY;
+    const USERNAME = import.meta.env.PUBLIC_LASTFM_USER;
+
+    const widget = document.getElementById("lastfm-widget")!;
+    const cover = document.getElementById("lastfm-cover") as HTMLImageElement;
+    const title = document.getElementById("lastfm-title")!;
+    const artist = document.getElementById("lastfm-artist")!;
+    const trackLink = document.getElementById(
+        "lastfm-track-link",
+    ) as HTMLAnchorElement;
+    const progressFill = document.getElementById("lastfm-progress-fill")!;
+    const status = document.getElementById("lastfm-status")!;
+
+    if (API_KEY && USERNAME && widget) {
+        let currentKey = "";
+        let durationMs = 0;
+        let startedAt = 0;
+        let isPlaying = false;
+        let rafId = 0;
+        const durationCache = new Map<string, number>();
+
+        const lastfm = (params: string) =>
+            fetch(
+                `https://ws.audioscrobbler.com/2.0/?${params}&api_key=${encodeURIComponent(API_KEY)}&format=json`,
+            ).then((r) => r.json());
+
+        function pickCover(
+            images?: Array<{ size: string; "#text"?: string }>,
+        ): string {
+            for (const size of ["extralarge", "large", "medium", "small"]) {
+                const img = images?.find(
+                    (i) => i.size === size && i["#text"],
+                );
+                if (img) return img["#text"] as string;
+            }
+            return "";
+        }
+
+        async function getDurationMs(
+            artistName: string,
+            trackName: string,
+            key: string,
+        ): Promise<number> {
+            const cached = durationCache.get(key);
+            if (cached !== undefined) return cached;
+            let d = 0;
+            try {
+                const info = await lastfm(
+                    `method=track.getinfo&artist=${encodeURIComponent(artistName)}&track=${encodeURIComponent(trackName)}`,
+                );
+                d = Number(info?.track?.duration) || 0;
+            } catch {
+                d = 0;
+            }
+            if (!d) {
+                try {
+                    const term = `${artistName} ${trackName}`;
+                    const res = await fetch(
+                        `https://itunes.apple.com/search?term=${encodeURIComponent(term)}&entity=song&limit=1`,
+                    );
+                    const data = await res.json();
+                    d = Number(data?.results?.[0]?.trackTimeMillis) || 0;
+                } catch {
+                    d = 0;
+                }
+            }
+            durationCache.set(key, d);
+            return d;
+        }
+
+        function render(track: any, playing: boolean) {
+            const artistName = track.artist["#text"] || track.artist || "";
+            title.textContent = track.name || "";
+            artist.textContent = artistName;
+            trackLink.href = track.url || "#";
+            const coverUrl = pickCover(track.image);
+            if (coverUrl) {
+                cover.src = coverUrl;
+                cover.style.display = "";
+            } else {
+                cover.style.display = "none";
+            }
+            status.textContent = playing ? "Now playing" : "Last played";
+        }
+
+        function animate() {
+            if (!isPlaying || durationMs <= 0) return;
+            const elapsed = Date.now() - startedAt;
+            const pct = Math.min(elapsed / durationMs, 1);
+            progressFill.style.width = `${pct * 100}%`;
+            if (pct < 1) {
+                rafId = requestAnimationFrame(animate);
+            }
+        }
+
+        async function update() {
+            try {
+                const data = await lastfm(
+                    `method=user.getrecenttracks&user=${encodeURIComponent(USERNAME)}&limit=1`,
+                );
+                const track = Array.isArray(data?.recenttracks?.track)
+                    ? data.recenttracks.track[0]
+                    : data?.recenttracks?.track;
+                if (!track) return;
+
+                isPlaying = track["@attr"]?.nowplaying === "true";
+                const artistName = track.artist["#text"] || track.artist || "";
+                const key = `${artistName} :: ${track.name}`;
+                const changed = key !== currentKey;
+                currentKey = key;
+
+                if (isPlaying) {
+                    if (changed) {
+                        durationMs = await getDurationMs(
+                            artistName,
+                            track.name,
+                            key,
+                        );
+                        startedAt = Date.now();
+                        if (durationMs > 0) {
+                            progressFill.style.width = "0%";
+                            progressFill.classList.remove("indeterminate");
+                        } else {
+                            progressFill.style.width = "";
+                            progressFill.classList.add("indeterminate");
+                        }
+                    } else if (!durationMs) {
+                        durationMs = await getDurationMs(
+                            artistName,
+                            track.name,
+                            key,
+                        );
+                        if (durationMs > 0) {
+                            progressFill.classList.remove("indeterminate");
+                            progressFill.style.width = "0%";
+                            startedAt = Date.now();
+                        }
+                    }
+                } else {
+                    durationMs = 0;
+                    progressFill.classList.remove("indeterminate");
+                    progressFill.style.width = "100%";
+                }
+
+                render(track, isPlaying);
+                widget.classList.remove("hidden");
+
+                if (isPlaying) {
+                    cancelAnimationFrame(rafId);
+                    animate();
+                }
+            } catch (err) {
+                console.error("Last.fm widget:", err);
+            }
+        }
+
+        update();
+        setInterval(update, 30000);
+    }
+</script>

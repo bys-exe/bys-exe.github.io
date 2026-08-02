@@ -1,6 +1,15 @@
 ---
+import { getCollection } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Header from "../components/Header.astro";
+
+const latestPosts = (await getCollection("blog"))
+    .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+    .slice(0, 3);
+
+const latestProjects = (await getCollection("projects"))
+    .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+    .slice(0, 3);
 ---
 
 <BaseLayout title="Home - Yuga Sai" showFooterRedirect={false}>
@@ -13,27 +22,132 @@ import Header from "../components/Header.astro";
                 <img
                     src="/images/pfp.jpg"
                     alt="Yuga Sai"
-                    class="w-32 h-32 rounded-full border-2 border-gray-300 dark:border-gray-600 shrink-0"
+                    class="w-24 h-24 rounded-full border-2 border-gray-300 dark:border-gray-600 shrink-0"
                 />
                 <h1 class="text-2xl sm:text-3xl font-bold">
-                    Hallo, I'm yuga :>
+                    Hello, I'm yuga :>
                 </h1>
             </div>
 
-            <!-- write your homepage content here -->
             <p class="mb-4">
                 Welcome to my little corner of the internet. This page is still
-                a work in progress, but you can find my <a
+                a work in progress, but you can find <a
                     href="/about"
                     class="text-[var(--accent)] hover:underline">about</a
                 >, <a
                     href="/projects"
                     class="text-[var(--accent)] hover:underline">projects</a
-                >, <a
-                    href="/blog"
-                    class="text-[var(--accent)] hover:underline">blog</a
+                >, <a href="/blog" class="text-[var(--accent)] hover:underline"
+                    >blog</a
                 >, and more around the site.
             </p>
+
+            <section
+                class="mt-12 pt-12 border-t border-gray-200 dark:border-gray-800"
+            >
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-2xl font-bold">Blogs</h2>
+                    <a
+                        href="/blog"
+                        class="text-sm text-[var(--accent)] hover:underline"
+                        >see all&rarr;</a
+                    >
+                </div>
+                <ul class="space-y-6">
+                    {
+                        latestPosts.map((post) => (
+                            <li>
+                                <div class="flex items-baseline justify-between gap-4">
+                                    <h3 class="text-lg sm:text-xl font-semibold">
+                                        <a
+                                            href={`/blog/${post.id}`}
+                                            class="hover:text-[var(--accent)] transition-colors"
+                                        >
+                                            {post.data.title}
+                                        </a>
+                                    </h3>
+                                    <time
+                                        datetime={post.data.pubDate.toISOString()}
+                                        class="text-sm text-gray-500 shrink-0"
+                                    >
+                                        {post.data.pubDate.toLocaleDateString(
+                                            "en-us",
+                                            {
+                                                year: "numeric",
+                                                month: "short",
+                                                day: "numeric",
+                                            },
+                                        )}
+                                    </time>
+                                </div>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">
+                                    {post.data.description}
+                                </p>
+                            </li>
+                        ))
+                    }
+                </ul>
+            </section>
+
+            <section
+                class="mt-12 pt-12 border-t border-gray-200 dark:border-gray-800"
+            >
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-2xl font-bold">Projects</h2>
+                    <a
+                        href="/projects"
+                        class="text-sm text-[var(--accent)] hover:underline"
+                        >see all&rarr;</a
+                    >
+                </div>
+                <ul class="space-y-6">
+                    {
+                        latestProjects.map((project) => (
+                            <li>
+                                <div class="flex items-baseline justify-between gap-4">
+                                    <h3 class="text-lg sm:text-xl font-semibold">
+                                        <a
+                                            href={`/projects/${project.id}`}
+                                            class="hover:text-[var(--accent)] transition-colors"
+                                        >
+                                            {project.data.title}
+                                        </a>
+                                    </h3>
+                                    <time
+                                        datetime={project.data.pubDate.toISOString()}
+                                        class="text-sm text-gray-500 shrink-0"
+                                    >
+                                        {project.data.pubDate.toLocaleDateString(
+                                            "en-us",
+                                            {
+                                                year: "numeric",
+                                                month: "short",
+                                                day: "numeric",
+                                            },
+                                        )}
+                                    </time>
+                                </div>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">
+                                    {project.data.description}
+                                </p>
+                            </li>
+                        ))
+                    }
+                </ul>
+            </section>
+
+            <section
+                class="mt-12 pt-12 border-t border-gray-200 dark:border-gray-800"
+            >
+                <h2 class="text-2xl font-bold mb-4">Experiences</h2>
+                <p class="mb-4">
+                    I currently have no experiences but i'm open to work! here's
+                    my <a
+                        href="/resume.pdf"
+                        class="text-[var(--accent)] hover:underline">resume</a
+                    >.
+                </p>
+            </section>
         </main>
     </div>
 </BaseLayout>

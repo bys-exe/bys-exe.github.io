@@ -1,9 +1,11 @@
 ---
 title: Scribere
 description: A terminal code editor that is simple and lightweight, written in C.
-pubDate: 2024-01-01
+pubDate: 2026-06-01
 github: https://github.com/bys-exe/scribere
 ---
+
+![Scribere banner](https://raw.githubusercontent.com/bys-exe/scribere/main/media/scribere-banner.png)
 
 Scribere is a terminal code editor similar to vim or nano, but built from scratch in C. It is extremely lightweight (around 55kb) and offers a fast, clean editing experience right in your terminal.
 
