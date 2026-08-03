@@ -63,6 +63,7 @@ import Header from "../components/Header.astro";
         message: string;
         created_at: string;
         approved: boolean;
+        rejected: boolean;
     }
 
     const loginScreen = document.getElementById("login-screen") as HTMLDivElement;
@@ -88,6 +89,23 @@ import Header from "../components/Header.astro";
         day: "numeric",
     });
 
+    function setFavicon(img: HTMLImageElement, website: string) {
+        let domain = "";
+        try {
+            domain = new URL(website).hostname;
+        } catch {}
+        const sources = [
+            `https://icons.duckduckgo.com/ip3/${domain}.ico`,
+            `https://www.google.com/s2/favicons?domain=${domain}&sz=64`,
+        ];
+        const apply = (list: string[]) => {
+            if (!list.length) return;
+            img.src = list[0];
+            img.onerror = () => apply(list.slice(1));
+        };
+        apply(sources);
+    }
+
     loginForm.addEventListener("submit", (e) => {
         e.preventDefault();
         if (passwordInput.value === MOD_PASSWORD) {
@@ -102,7 +120,20 @@ import Header from "../components/Header.astro";
 
     function createRow(entry: GuestbookEntry) {
         const li = document.createElement("li");
-        li.className = "border-l-4 border-[var(--accent)] pl-4 py-2";
+        li.className = "py-2";
+
+        const row = document.createElement("div");
+        row.className = "flex items-start gap-3";
+
+        const icon = document.createElement("img");
+        icon.alt = "";
+        icon.loading = "lazy";
+        icon.referrerPolicy = "no-referrer";
+        icon.className = "w-10 h-10 rounded-lg shrink-0 object-contain";
+        setFavicon(icon, entry.website);
+
+        const body = document.createElement("div");
+        body.className = "min-w-0 flex-1";
 
         const header = document.createElement("div");
 
@@ -118,12 +149,18 @@ import Header from "../components/Header.astro";
         date.textContent = dateFormatter.format(new Date(entry.created_at));
 
         const badge = document.createElement("span");
+        const badgeClass = entry.approved
+            ? "bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300"
+            : entry.rejected
+              ? "bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300"
+              : "bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-300";
         badge.className =
-            "ml-2 text-xs font-medium px-2 py-0.5 rounded-full " +
-            (entry.approved
-                ? "bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300"
-                : "bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-300");
-        badge.textContent = entry.approved ? "Approved" : "Pending";
+            "ml-2 text-xs font-medium px-2 py-0.5 rounded-full " + badgeClass;
+        badge.textContent = entry.approved
+            ? "Approved"
+            : entry.rejected
+              ? "Rejected"
+              : "Pending";
 
         header.append(name, date, badge);
 
@@ -131,12 +168,14 @@ import Header from "../components/Header.astro";
         message.className = "text-gray-600 dark:text-gray-400 mt-1 break-words";
         message.textContent = entry.message;
 
-        li.append(header, message);
+        body.append(header, message);
+        row.append(icon, body);
+        li.append(row);
+
+        const actions = document.createElement("div");
+        actions.className = "mt-3 flex gap-2";
 
         if (!entry.approved) {
-            const actions = document.createElement("div");
-            actions.className = "mt-3 flex gap-2";
-
             const approve = document.createElement("button");
             approve.textContent = "Approve";
             approve.dataset.action = "approve";
@@ -152,8 +191,17 @@ import Header from "../components/Header.astro";
                 "px-3 py-1.5 rounded-md bg-red-600 text-white text-sm font-medium hover:opacity-90";
 
             actions.append(approve, reject);
-            li.append(actions);
         }
+
+        const remove = document.createElement("button");
+        remove.textContent = "Delete";
+        remove.dataset.action = "delete";
+        remove.dataset.id = String(entry.id);
+        remove.className =
+            "px-3 py-1.5 rounded-md bg-gray-600 text-white text-sm font-medium hover:opacity-90";
+
+        actions.append(remove);
+        li.append(actions);
 
         return li;
     }
@@ -161,7 +209,7 @@ import Header from "../components/Header.astro";
     async function loadEntries() {
         try {
             const res = await fetch(
-                `${SUPABASE_URL}/rest/v1/guestbook?select=id,name,website,message,created_at,approved&order=created_at.desc`,
+                `${SUPABASE_URL}/rest/v1/guestbook?select=id,name,website,message,created_at,approved,rejected&rejected=eq.false&order=created_at.desc`,
                 { headers },
             );
             if (!res.ok) throw new Error();
@@ -175,25 +223,35 @@ import Header from "../components/Header.astro";
         }
     }
 
-    async function approveEntry(id: number): Promise<boolean> {
-        const res = await fetch(`${SUPABASE_URL}/rest/v1/guestbook?id=eq.${id}`, {
+    async function approveEntry(id: number): Promise<Response> {
+        return fetch(`${SUPABASE_URL}/rest/v1/guestbook?id=eq.${id}`, {
             method: "PATCH",
             headers: {
                 ...headers,
                 "Content-Type": "application/json",
                 Prefer: "return=minimal",
             },
-            body: JSON.stringify({ approved: true }),
+            body: JSON.stringify({ approved: true, rejected: false }),
         });
-        return res.ok;
     }
 
-    async function rejectEntry(id: number): Promise<boolean> {
-        const res = await fetch(`${SUPABASE_URL}/rest/v1/guestbook?id=eq.${id}`, {
+    async function rejectEntry(id: number): Promise<Response> {
+        return fetch(`${SUPABASE_URL}/rest/v1/guestbook?id=eq.${id}`, {
+            method: "PATCH",
+            headers: {
+                ...headers,
+                "Content-Type": "application/json",
+                Prefer: "return=minimal",
+            },
+            body: JSON.stringify({ approved: false, rejected: true }),
+        });
+    }
+
+    async function deleteEntry(id: number): Promise<Response> {
+        return fetch(`${SUPABASE_URL}/rest/v1/guestbook?id=eq.${id}`, {
             method: "DELETE",
             headers,
         });
-        return res.ok;
     }
 
     modList.addEventListener("click", async (e) => {
@@ -205,16 +263,25 @@ import Header from "../components/Header.astro";
         const action = button.dataset.action;
         modStatus.textContent = "Working...";
 
-        const ok =
-            action === "approve"
-                ? await approveEntry(id)
-                : await rejectEntry(id);
+        let res: Response;
+        let status: string;
+        try {
+            if (action === "approve") {
+                res = await approveEntry(id);
+                status = "Approved.";
+            } else if (action === "reject") {
+                res = await rejectEntry(id);
+                status = "Rejected.";
+            } else {
+                res = await deleteEntry(id);
+                status = "Deleted.";
+            }
+        } catch (err) {
+            modStatus.textContent = "Error: " + err;
+            return;
+        }
 
-        modStatus.textContent = ok
-            ? action === "approve"
-                ? "Approved."
-                : "Rejected."
-            : "Action failed.";
+        modStatus.textContent = res.ok ? status : `Action failed (${res.status}).`;
         loadEntries();
     });
 </script>

@@ -9,7 +9,7 @@ import Header from "../components/Header.astro";
         <main class="py-8">
             <h1 class="text-2xl sm:text-3xl font-bold mb-4">Guestbook</h1>
             <p class="mb-8 text-gray-600 dark:text-gray-400">
-                Leave a note before you go — sign my guestbook!
+                WAIT- Before you go, leave a message in the guestbook!
             </p>
 
             <form id="guestbook-form" class="mb-12">
@@ -110,9 +110,39 @@ import Header from "../components/Header.astro";
         day: "numeric",
     });
 
+    function setFavicon(img: HTMLImageElement, website: string) {
+        let domain = "";
+        try {
+            domain = new URL(website).hostname;
+        } catch {}
+        const sources = [
+            `https://icons.duckduckgo.com/ip3/${domain}.ico`,
+            `https://www.google.com/s2/favicons?domain=${domain}&sz=64`,
+        ];
+        const apply = (list: string[]) => {
+            if (!list.length) return;
+            img.src = list[0];
+            img.onerror = () => apply(list.slice(1));
+        };
+        apply(sources);
+    }
+
     function createEntry(entry: GuestbookEntry) {
         const li = document.createElement("li");
-        li.className = "border-l-4 border-[var(--accent)] pl-4 py-2";
+        li.className = "py-2";
+
+        const row = document.createElement("div");
+        row.className = "flex items-start gap-3";
+
+        const icon = document.createElement("img");
+        icon.alt = "";
+        icon.loading = "lazy";
+        icon.referrerPolicy = "no-referrer";
+        icon.className = "w-10 h-10 rounded-lg shrink-0 object-contain";
+        setFavicon(icon, entry.website);
+
+        const body = document.createElement("div");
+        body.className = "min-w-0 flex-1";
 
         const header = document.createElement("div");
 
@@ -133,7 +163,9 @@ import Header from "../components/Header.astro";
         message.className = "text-gray-600 dark:text-gray-400 mt-1 break-words";
         message.textContent = entry.message;
 
-        li.append(header, message);
+        body.append(header, message);
+        row.append(icon, body);
+        li.append(row);
         return li;
     }
 
@@ -170,7 +202,7 @@ import Header from "../components/Header.astro";
 
         try {
             if (honeyInput.value) {
-                formStatus.textContent = "Thanks for signing! I will approve your comment soon ";
+                formStatus.textContent = "Thanks for signing! I will approve your comment soon~";
                 form.reset();
                 return;
             }
@@ -189,7 +221,7 @@ import Header from "../components/Header.astro";
                 body: JSON.stringify({ name, website, message }),
             });
             if (res.ok) {
-                formStatus.textContent = "Thanks for signing!";
+                formStatus.textContent = "Thanks for signing! I will approve your comment soon~";
                 form.reset();
                 loadEntries();
             } else {
