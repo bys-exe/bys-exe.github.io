@@ -2,6 +2,7 @@
 import { getCollection, render } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import Header from "../../components/Header.astro";
+import Comments from "../../components/Comments.astro";
 
 export async function getStaticPaths() {
     const posts = await getCollection("blog");
@@ -38,6 +39,14 @@ const { Content } = await render(post);
                 </header>
                 <Content />
             </article>
+
+            <hr class="mt-12 border-gray-200 dark:border-gray-800" />
+
+            <Comments
+                page={Astro.params.slug}
+                heading="Comments"
+                submitLabel="Post Comment"
+            />
         </main>
     </div>
 </BaseLayout>

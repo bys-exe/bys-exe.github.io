@@ -64,6 +64,7 @@ import Header from "../components/Header.astro";
         created_at: string;
         approved: boolean;
         rejected: boolean;
+        page: string | null;
     }
 
     const loginScreen = document.getElementById("login-screen") as HTMLDivElement;
@@ -168,7 +169,19 @@ import Header from "../components/Header.astro";
         message.className = "text-gray-600 dark:text-gray-400 mt-1 break-words";
         message.textContent = entry.message;
 
-        body.append(header, message);
+        const pageLabel = document.createElement("div");
+        pageLabel.className = "mt-1 text-xs text-gray-500";
+        if (entry.page) {
+            const link = document.createElement("a");
+            link.href = `/blog/${encodeURIComponent(entry.page)}`;
+            link.textContent = `Blog: ${entry.page}`;
+            link.className = "hover:text-[var(--accent)]";
+            pageLabel.append(link);
+        } else {
+            pageLabel.textContent = "Guestbook";
+        }
+
+        body.append(header, message, pageLabel);
         row.append(icon, body);
         li.append(row);
 
@@ -209,7 +222,7 @@ import Header from "../components/Header.astro";
     async function loadEntries() {
         try {
             const res = await fetch(
-                `${SUPABASE_URL}/rest/v1/guestbook?select=id,name,website,message,created_at,approved,rejected&rejected=eq.false&order=created_at.desc`,
+                `${SUPABASE_URL}/rest/v1/guestbook?select=id,name,website,message,created_at,approved,rejected,page&rejected=eq.false&order=created_at.desc`,
                 { headers },
             );
             if (!res.ok) throw new Error();

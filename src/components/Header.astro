@@ -12,7 +12,29 @@ import ThemeSwitcher from "./ThemeSwitcher.astro";
             <a href="/guestbook" class="hover:text-[var(--accent)]">Guestbook</a>
             <a href="/contact" class="hover:text-[var(--accent)]">Contact</a>
         </nav>
-        <div class="sm:ml-4">
+        <div class="sm:ml-4 flex items-center gap-2">
+            <a
+                href="/index.xml"
+                title="RSS feed"
+                aria-label="RSS feed"
+                class="p-2 rounded-full transition-colors duration-300"
+            >
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="w-6 h-6 text-[var(--accent)]"
+                    aria-hidden="true"
+                >
+                    <path d="M4 11a9 9 0 0 1 9 9" />
+                    <path d="M4 4a16 16 0 0 1 16 16" />
+                    <circle cx="5" cy="19" r="1" />
+                </svg>
+            </a>
             <ThemeSwitcher />
         </div>
     </div>
