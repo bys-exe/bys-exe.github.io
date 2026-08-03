@@ -70,8 +70,8 @@ import Header from "../components/Header.astro";
 </BaseLayout>
 
 <script>
-    const SUPABASE_URL = "https://nwhjcwdajyubikpyhcza.supabase.co";
-    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im53aGpjd2Rhanl1YmlrcHloY3phIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODU2ODEwMDgsImV4cCI6MjEwMTI1NzAwOH0.ZBhuybaykXmjPpFdfUGT7we4DT6J692N30sFj9jGJeA";
+    const SUPABASE_URL = import.meta.env.PUBLIC_SUPABASE_URL;
+    const SUPABASE_ANON_KEY = import.meta.env.PUBLIC_SUPABASE_ANON_KEY;
 
     interface GuestbookEntry {
         id: number;
@@ -140,7 +140,7 @@ import Header from "../components/Header.astro";
     async function loadEntries() {
         try {
             const res = await fetch(
-                `${SUPABASE_URL}/rest/v1/guestbook?select=id,name,website,message,created_at&order=created_at.desc`,
+                `${SUPABASE_URL}/rest/v1/guestbook?select=id,name,website,message,created_at&approved=eq.true&order=created_at.desc`,
                 { headers },
             );
             if (!res.ok) throw new Error();
@@ -170,7 +170,7 @@ import Header from "../components/Header.astro";
 
         try {
             if (honeyInput.value) {
-                formStatus.textContent = "Thanks for signing!";
+                formStatus.textContent = "Thanks for signing! I will approve your comment soon ";
                 form.reset();
                 return;
             }
