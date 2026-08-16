@@ -55,12 +55,19 @@
     }
 
     button.addEventListener("click", () => {
-        html.classList.toggle("dark");
-        localStorage.setItem(
-            "theme",
-            html.classList.contains("dark") ? "dark" : "light",
-        );
-        updateIcons();
+        const toggle = () => {
+            html.classList.toggle("dark");
+            localStorage.setItem(
+                "theme",
+                html.classList.contains("dark") ? "dark" : "light",
+            );
+            updateIcons();
+        };
+        if (document.startViewTransition) {
+            document.startViewTransition(toggle);
+        } else {
+            toggle();
+        }
     });
 
     updateIcons();

@@ -74,3 +74,39 @@
 a:hover {
     text-decoration-style: dashed;
 }
+
+::view-transition-group(root) {
+    animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+::view-transition-old(root),
+.dark::view-transition-old(root) {
+    animation: none;
+    animation-fill-mode: both;
+    z-index: -1;
+}
+
+::view-transition-new(root) {
+    mask: url("https://media.tenor.com/gVPazpEOQ3kAAAAi/chika.gif") center / 0
+        no-repeat;
+    animation: gif-chika-reveal 1700ms both;
+}
+
+.dark::view-transition-new(root) {
+    animation: gif-chika-reveal 1700ms both;
+}
+
+@keyframes gif-chika-reveal {
+    0% {
+        mask-size: 0;
+    }
+    10% {
+        mask-size: 50vmax;
+    }
+    90% {
+        mask-size: 50vmax;
+    }
+    100% {
+        mask-size: 2000vmax;
+    }
+}
