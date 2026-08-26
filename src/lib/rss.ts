@@ -22,7 +22,7 @@ async function renderContent(
 
 export async function generateRss(
     base: string,
-    feedPath = "/rss.xml",
+    feedPath = "/index.xml",
 ): Promise<string> {
     const posts = (await getCollection("blog")).sort(
         (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
