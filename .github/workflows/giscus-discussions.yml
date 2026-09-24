@@ -1,0 +1,26 @@
+name: Ensure giscus discussions
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - "src/content/blog/**"
+      - "scripts/ensure-giscus-discussions.mjs"
+      - ".github/workflows/giscus-discussions.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  discussions: write
+
+jobs:
+  ensure:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: node scripts/ensure-giscus-discussions.mjs
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
