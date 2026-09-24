@@ -42,11 +42,7 @@ const { Content } = await render(post);
 
             <hr class="mt-12 border-gray-200 dark:border-gray-800" />
 
-            <Comments
-                page={Astro.params.slug}
-                heading="Comments"
-                submitLabel="Post Comment"
-            />
+            <Comments heading="Comments" />
         </main>
     </div>
 </BaseLayout>

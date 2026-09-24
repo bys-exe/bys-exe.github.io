@@ -1,252 +1,61 @@
 ---
 interface Props {
-    page?: string;
-    heading: string;
-    submitLabel: string;
+    heading?: string;
+    reactionsEnabled?: boolean;
 }
 
-const { page, heading, submitLabel } = Astro.props;
-const pageAttr = page ?? "";
+const { heading, reactionsEnabled = true } = Astro.props;
 ---
 
-<section id="comments" class="mt-12" data-page={pageAttr}>
-    <h2 class="text-xl font-semibold mb-4">{heading}</h2>
-
-    <form id="comments-form" class="mb-10">
-        <div class="mb-4">
-            <label for="c-name" class="block text-sm font-medium mb-1">Name</label>
-            <input
-                type="text"
-                id="c-name"
-                name="name"
-                required
-                maxlength="100"
-                placeholder="Your name"
-                class="w-full px-3 py-2 rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-[#313244] focus:outline-none focus:border-[var(--accent)]"
-            />
-        </div>
-        <div class="mb-4">
-            <label for="c-website" class="block text-sm font-medium mb-1">Website</label>
-            <input
-                type="text"
-                inputmode="url"
-                id="c-website"
-                name="website"
-                required
-                maxlength="500"
-                placeholder="your-website.com"
-                class="w-full px-3 py-2 rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-[#313244] focus:outline-none focus:border-[var(--accent)]"
-            />
-        </div>
-        <div class="mb-4 hidden" aria-hidden="true">
-            <input type="text" id="c-honey" name="_honey" tabindex="-1" autocomplete="off" />
-        </div>
-        <div class="mb-4">
-            <label for="c-message" class="block text-sm font-medium mb-1">Message</label>
-            <textarea
-                id="c-message"
-                name="message"
-                required
-                maxlength="2000"
-                rows="4"
-                placeholder="Say hi, drop a note, or share a thought..."
-                class="w-full px-3 py-2 rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-[#313244] focus:outline-none focus:border-[var(--accent)]"
-            ></textarea>
-        </div>
-        <button
-            type="submit"
-            class="px-4 py-2 rounded-md bg-[var(--accent)] text-white font-medium hover:opacity-90 disabled:opacity-50"
-        >
-            {submitLabel}
-        </button>
-        <p id="comments-form-status" class="mt-4 text-sm" role="status"></p>
-    </form>
-
-    <p id="comments-status" class="text-gray-600 dark:text-gray-400">
-        Loading comments...
-    </p>
-    <ul id="comments-list" class="space-y-6"></ul>
+<section class="mt-12">
+    {heading && <h2 class="text-xl font-semibold mb-4">{heading}</h2>}
+    <div class="giscus" data-reactions-enabled={reactionsEnabled ? "1" : "0"}></div>
 </section>
 
-<script>
-    const SUPABASE_URL = import.meta.env.PUBLIC_SUPABASE_URL;
-    const SUPABASE_ANON_KEY = import.meta.env.PUBLIC_SUPABASE_ANON_KEY;
-
-    interface Comment {
-        id: number;
-        name: string;
-        website: string;
-        message: string;
-        created_at: string;
+<script is:inline>
+    function getGiscusTheme() {
+        return document.documentElement.classList.contains("dark")
+            ? "catppuccin_mocha"
+            : "catppuccin_latte";
     }
 
-    const root = document.getElementById("comments") as HTMLElement;
-    const page = root.dataset.page || null;
+    function loadGiscus() {
+        var container = document.querySelector(".giscus");
+        if (!container) return;
+        var reactionsEnabled =
+            container.getAttribute("data-reactions-enabled") || "1";
+        container.innerHTML = "";
+        var script = document.createElement("script");
+        script.src = "https://giscus.app/client.js";
+        script.async = true;
+        script.crossOrigin = "anonymous";
+        script.setAttribute("data-repo", "bys-exe/bys-exe.github.io");
+        script.setAttribute("data-repo-id", "R_kgDOTJwhRQ");
+        script.setAttribute("data-category", "Comments");
+        script.setAttribute("data-category-id", "DIC_kwDOTJwhRc4DG5SM");
+        script.setAttribute("data-mapping", "pathname");
+        script.setAttribute("data-strict", "0");
+        script.setAttribute("data-reactions-enabled", reactionsEnabled);
+        script.setAttribute("data-emit-metadata", "0");
+        script.setAttribute("data-input-position", "top");
+        script.setAttribute("data-theme", getGiscusTheme());
+        script.setAttribute("data-lang", "en");
+        script.setAttribute("data-loading", "lazy");
+        container.appendChild(script);
+    }
 
-    const entriesList = document.getElementById(
-        "comments-list",
-    ) as HTMLUListElement;
-    const entriesStatus = document.getElementById(
-        "comments-status",
-    ) as HTMLParagraphElement;
-    const form = document.getElementById("comments-form") as HTMLFormElement;
-    const formStatus = document.getElementById(
-        "comments-form-status",
-    ) as HTMLParagraphElement;
-    const submitButton = form.querySelector(
-        'button[type="submit"]',
-    ) as HTMLButtonElement;
-    const nameInput = document.getElementById("c-name") as HTMLInputElement;
-    const websiteInput = document.getElementById("c-website") as HTMLInputElement;
-    const messageInput = document.getElementById(
-        "c-message",
-    ) as HTMLTextAreaElement;
-    const honeyInput = document.getElementById("c-honey") as HTMLInputElement;
+    function syncGiscusTheme() {
+        var iframe = document.querySelector("iframe.giscus-frame");
+        if (!iframe || !iframe.contentWindow) return;
+        iframe.contentWindow.postMessage(
+            { giscus: { setConfig: { theme: getGiscusTheme() } } },
+            "https://giscus.app",
+        );
+    }
 
-    const headers = {
-        apikey: SUPABASE_ANON_KEY,
-        Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
-    };
-
-    const dateFormatter = new Intl.DateTimeFormat("en-us", {
-        year: "numeric",
-        month: "short",
-        day: "numeric",
+    loadGiscus();
+    new MutationObserver(syncGiscusTheme).observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ["class"],
     });
-
-    const pageFilter = page
-        ? `page=eq.${encodeURIComponent(page)}`
-        : "page=is.null";
-
-    function setFavicon(img: HTMLImageElement, website: string) {
-        let domain = "";
-        try {
-            domain = new URL(website).hostname;
-        } catch {}
-        const sources = [
-            `https://icons.duckduckgo.com/ip3/${domain}.ico`,
-            `https://www.google.com/s2/favicons?domain=${domain}&sz=64`,
-        ];
-        const apply = (list: string[]) => {
-            if (!list.length) return;
-            img.src = list[0];
-            img.onerror = () => apply(list.slice(1));
-        };
-        apply(sources);
-    }
-
-    function createEntry(entry: Comment) {
-        const li = document.createElement("li");
-        li.className = "py-2";
-
-        const row = document.createElement("div");
-        row.className = "flex items-start gap-3";
-
-        const icon = document.createElement("img");
-        icon.alt = "";
-        icon.loading = "lazy";
-        icon.referrerPolicy = "no-referrer";
-        icon.className = "w-10 h-10 rounded-lg shrink-0 object-contain";
-        setFavicon(icon, entry.website);
-
-        const body = document.createElement("div");
-        body.className = "min-w-0 flex-1";
-
-        const header = document.createElement("div");
-
-        const name = document.createElement("a");
-        name.href = entry.website;
-        name.target = "_blank";
-        name.rel = "noopener noreferrer";
-        name.textContent = entry.name;
-        name.className = "font-semibold text-[var(--accent)] hover:underline";
-
-        const date = document.createElement("span");
-        date.className = "text-sm text-gray-500 ml-2";
-        date.textContent = dateFormatter.format(new Date(entry.created_at));
-
-        header.append(name, date);
-
-        const message = document.createElement("p");
-        message.className = "text-gray-600 dark:text-gray-400 mt-1 break-words";
-        message.textContent = entry.message;
-
-        body.append(header, message);
-        row.append(icon, body);
-        li.append(row);
-        return li;
-    }
-
-    async function loadEntries() {
-        try {
-            const res = await fetch(
-                `${SUPABASE_URL}/rest/v1/guestbook?select=id,name,website,message,created_at&${pageFilter}&approved=eq.true&order=created_at.desc`,
-                { headers },
-            );
-            if (!res.ok) throw new Error();
-            const entries = (await res.json()) as Comment[];
-            entriesStatus.textContent =
-                entries.length === 0 ? "No comments yet — be the first!" : "";
-            entriesList.innerHTML = "";
-            entries.forEach((entry) =>
-                entriesList.appendChild(createEntry(entry)),
-            );
-        } catch {
-            entriesStatus.textContent = "Failed to load comments.";
-        }
-    }
-
-    form.addEventListener("submit", async (e) => {
-        e.preventDefault();
-        formStatus.textContent = "Submitting...";
-        submitButton.disabled = true;
-
-        const name = nameInput.value.trim();
-        const websiteRaw = websiteInput.value.trim();
-        const website = /^https?:\/\//i.test(websiteRaw)
-            ? websiteRaw
-            : "https://" + websiteRaw;
-        const message = messageInput.value.trim();
-
-        try {
-            if (honeyInput.value) {
-                formStatus.textContent =
-                    "Thanks! I will approve your comment soon~";
-                form.reset();
-                return;
-            }
-            if (!name || !website || !message) {
-                formStatus.textContent = "Please fill in all fields.";
-                return;
-            }
-            if (name.length > 100 || website.length > 500 || message.length > 2000) {
-                formStatus.textContent = "One of the fields is too long.";
-                return;
-            }
-
-            const res = await fetch(`${SUPABASE_URL}/rest/v1/guestbook`, {
-                method: "POST",
-                headers: { ...headers, "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    name,
-                    website,
-                    message,
-                    ...(page ? { page } : {}),
-                }),
-            });
-            if (res.ok) {
-                formStatus.textContent =
-                    "Thanks! I will approve your comment soon~";
-                form.reset();
-            } else {
-                formStatus.textContent = "Something went wrong. Please try again.";
-            }
-        } catch {
-            formStatus.textContent = "Network error — could not submit.";
-        } finally {
-            submitButton.disabled = false;
-        }
-    });
-
-    loadEntries();
 </script>
