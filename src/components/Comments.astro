@@ -2,14 +2,27 @@
 interface Props {
     heading?: string;
     reactionsEnabled?: boolean;
+    mapping?: string;
+    term?: string;
 }
 
-const { heading, reactionsEnabled = true } = Astro.props;
+const {
+    heading,
+    reactionsEnabled = true,
+    mapping = "pathname",
+    term = "",
+} = Astro.props;
 ---
 
 <section class="mt-12">
     {heading && <h2 class="text-xl font-semibold mb-4">{heading}</h2>}
-    <div class="giscus" data-reactions-enabled={reactionsEnabled ? "1" : "0"}></div>
+    <div
+        class="giscus"
+        data-reactions-enabled={reactionsEnabled ? "1" : "0"}
+        data-mapping={mapping}
+        data-term={term}
+    >
+    </div>
 </section>
 
 <script is:inline>
@@ -24,6 +37,8 @@ const { heading, reactionsEnabled = true } = Astro.props;
         if (!container) return;
         var reactionsEnabled =
             container.getAttribute("data-reactions-enabled") || "1";
+        var mapping = container.getAttribute("data-mapping") || "pathname";
+        var term = container.getAttribute("data-term") || "";
         container.innerHTML = "";
         var script = document.createElement("script");
         script.src = "https://giscus.app/client.js";
@@ -33,8 +48,11 @@ const { heading, reactionsEnabled = true } = Astro.props;
         script.setAttribute("data-repo-id", "R_kgDOTJwhRQ");
         script.setAttribute("data-category", "Comments");
         script.setAttribute("data-category-id", "DIC_kwDOTJwhRc4DGS5M");
-        script.setAttribute("data-mapping", "pathname");
+        script.setAttribute("data-mapping", mapping);
         script.setAttribute("data-strict", "0");
+        if (mapping === "specific" && term) {
+            script.setAttribute("data-term", term);
+        }
         script.setAttribute("data-reactions-enabled", reactionsEnabled);
         script.setAttribute("data-emit-metadata", "0");
         script.setAttribute("data-input-position", "top");

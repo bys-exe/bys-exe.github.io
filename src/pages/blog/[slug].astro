@@ -42,7 +42,7 @@ const { Content } = await render(post);
 
             <hr class="mt-12 border-gray-200 dark:border-gray-800" />
 
-            <Comments heading="Comments" />
+            <Comments heading="Comments" mapping="specific" term={post.id} />
         </main>
     </div>
 </BaseLayout>
