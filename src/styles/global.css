@@ -75,6 +75,27 @@ a:hover {
     text-decoration-style: dashed;
 }
 
+/* Custom pixel-art cursors (converted from .ani to animated .gif;
+   animates in Firefox, static first frame in Chrome) */
+html {
+    cursor: url("/cursors/Normal.gif"), auto;
+}
+
+a,
+button,
+[role="button"],
+input[type="submit"],
+label {
+    cursor: url("/cursors/Link.gif"), pointer;
+}
+
+input[type="text"],
+input[type="search"],
+input[type="email"],
+textarea {
+    cursor: url("/cursors/Text.gif"), text;
+}
+
 ::view-transition-group(root) {
     animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
 }
