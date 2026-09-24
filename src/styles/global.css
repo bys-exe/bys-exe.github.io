@@ -78,7 +78,7 @@ a:hover {
 /* Custom pixel-art cursors (converted from .ani to animated .gif;
    animates in Firefox, static first frame in Chrome) */
 html {
-    cursor: url("/cursors/Normal.gif"), auto;
+    cursor: url("/cursors/Normal.gif") 0 0, auto;
 }
 
 a,
@@ -86,14 +86,19 @@ button,
 [role="button"],
 input[type="submit"],
 label {
-    cursor: url("/cursors/Link.gif"), pointer;
+    cursor: url("/cursors/Link.gif") 12 2, pointer;
 }
 
 input[type="text"],
 input[type="search"],
 input[type="email"],
 textarea {
-    cursor: url("/cursors/Text.gif"), text;
+    cursor: url("/cursors/Text.gif") 7 26, text;
+}
+
+:disabled,
+[aria-disabled="true"] {
+    cursor: url("/cursors/Unavailable.gif") 0 0, not-allowed;
 }
 
 ::view-transition-group(root) {
