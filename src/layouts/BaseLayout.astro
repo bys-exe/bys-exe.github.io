@@ -7,6 +7,7 @@ interface Props {
 const { title, showFooterRedirect = true } = Astro.props;
 const isHome = Astro.url.pathname === "/";
 import "../styles/global.css";
+import CustomCursor from "../components/CustomCursor.astro";
 ---
 
 <!doctype html>
@@ -55,7 +56,21 @@ import "../styles/global.css";
                     </div>
                 )
             }
+            <p
+                class="mt-4 text-[10px] uppercase tracking-widest text-[var(--text-muted)]"
+            >
+                Maomao cursors by
+                <a
+                    href="http://www.rw-designer.com/cursor-set/maomao"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="hover:text-[var(--accent)]"
+                    >PandoraBonf</a
+                >
+                (CC-BY)
+            </p>
         </footer>
+        <CustomCursor />
     </body>
 </html>
 

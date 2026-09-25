@@ -136,3 +136,30 @@ textarea {
         mask-size: 2000vmax;
     }
 }
+
+/* Maomao custom cursors (CC-BY PandoraBonf). Static first frames here as
+   the no-JS fallback; CustomCursor.astro cycles PNG frames via JS so the
+   animation plays in every browser (Chrome doesn't animate GIF cursors). */
+html {
+    cursor: url("/cursors/maomao/normal/frame0.png") 0 0, auto;
+}
+
+a,
+button,
+[role="button"],
+input[type="submit"],
+label {
+    cursor: url("/cursors/maomao/link/frame0.png") 9 1, pointer;
+}
+
+input[type="text"],
+input[type="search"],
+input[type="email"],
+textarea {
+    cursor: url("/cursors/maomao/text/frame0.png") 4 12, text;
+}
+
+:disabled,
+[aria-disabled="true"] {
+    cursor: url("/cursors/maomao/unavailable/frame0.png") 9 6, not-allowed;
+}

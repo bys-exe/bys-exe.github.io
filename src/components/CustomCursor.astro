@@ -1,0 +1,147 @@
+---
+// Animated Maomao cursors (CC-BY PandoraBonf).
+// Technique inspired by alienmelon/animatedWebCursors: cycle PNG frames via
+// JS instead of GIF, so the animation plays in every browser (Chrome does
+// not animate GIF cursors). Improvements here: frames are preloaded before
+// the timer starts (no first-loop flicker), one shared ticker instead of a
+// timer per element, per-cursor hotspot coordinates, pauses when the tab is
+// hidden, and disabled entirely under prefers-reduced-motion.
+// Without JS, the static first frames from global.css still apply.
+---
+
+<script is:inline>
+    (function () {
+        if (
+            window.matchMedia("(prefers-reduced-motion: reduce)").matches
+        ) {
+            return;
+        }
+
+        function frames(base, count) {
+            var out = [];
+            for (var i = 0; i < count; i++) {
+                out.push(base + i + ".png");
+            }
+            return out;
+        }
+
+        var groups = [
+            {
+                elements: [document.documentElement],
+                frames: frames("/cursors/maomao/normal/frame", 10),
+                hotspot: "0 0",
+                fallback: "auto",
+                interval: 133,
+            },
+            {
+                selector:
+                    'a, button, [role="button"], input[type="submit"], label',
+                frames: frames("/cursors/maomao/link/frame", 3),
+                hotspot: "9 1",
+                fallback: "pointer",
+                interval: 133,
+            },
+            {
+                selector:
+                    'input[type="text"], input[type="search"], input[type="email"], textarea',
+                frames: frames("/cursors/maomao/text/frame", 10),
+                hotspot: "4 12",
+                fallback: "text",
+                interval: 133,
+            },
+            {
+                selector: ":disabled, [aria-disabled='true']",
+                frames: frames("/cursors/maomao/unavailable/frame", 3),
+                hotspot: "9 6",
+                fallback: "not-allowed",
+                interval: 100,
+            },
+        ];
+
+        groups.forEach(function (group) {
+            if (group.selector) {
+                group.elements = Array.prototype.slice.call(
+                    document.querySelectorAll(group.selector),
+                );
+            }
+            group.index = 0;
+            group.lastSwitch = 0;
+        });
+
+        function apply(group) {
+            var url =
+                "url(" +
+                group.frames[group.index] +
+                ") " +
+                group.hotspot +
+                ", " +
+                group.fallback;
+            group.elements.forEach(function (el) {
+                el.style.cursor = url;
+            });
+        }
+
+        var timer = null;
+        function tick() {
+            var now = performance.now();
+            groups.forEach(function (group) {
+                if (
+                    group.elements.length &&
+                    now - group.lastSwitch >= group.interval
+                ) {
+                    group.index = (group.index + 1) % group.frames.length;
+                    group.lastSwitch = now;
+                    apply(group);
+                }
+            });
+        }
+        function start() {
+            if (!timer) {
+                groups.forEach(function (group) {
+                    group.lastSwitch = performance.now();
+                });
+                timer = setInterval(tick, 50);
+            }
+        }
+        function stop() {
+            if (timer) {
+                clearInterval(timer);
+                timer = null;
+            }
+        }
+
+        // Preload every frame so the first loop doesn't flicker, then start.
+        // If anything hangs, start anyway after 2s.
+        var pending = 0;
+        var started = false;
+        function maybeStart() {
+            if (!started && pending === 0) {
+                started = true;
+                start();
+            }
+        }
+        groups.forEach(function (group) {
+            group.frames.forEach(function (src) {
+                pending++;
+                var img = new Image();
+                img.onload = img.onerror = function () {
+                    pending--;
+                    maybeStart();
+                };
+                img.src = src;
+            });
+        });
+        setTimeout(function () {
+            pending = 0;
+            maybeStart();
+        }, 2000);
+
+        document.addEventListener("visibilitychange", function () {
+            if (document.hidden) {
+                stop();
+            } else if (started) {
+                start();
+            }
+        });
+    })();
+</script>
