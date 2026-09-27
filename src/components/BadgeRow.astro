@@ -1,0 +1,48 @@
+---
+const badges = [
+    {
+        href: "https://bys-exe.github.io/",
+        alt: "bys_exe",
+        src: "/badges/bys-button.gif",
+    },
+    {
+        href: "https://catppuccin.com/",
+        alt: "Catppuccin",
+        src: "https://jotalea.com.ar/assets/88x31/catppuccin-animated.gif",
+    },
+    {
+        href: "https://zen-browser.app/",
+        alt: "Zen Browser",
+        src: "/badges/zen-button.png",
+    },
+];
+---
+
+<ul class="flex flex-wrap items-center justify-center gap-3">
+    {
+        badges.map((badge) => (
+            <li class="shrink-0">
+                <a
+                    href={badge.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    title={badge.alt}
+                >
+                    {badge.src ? (
+                        <img
+                            src={badge.src}
+                            alt={badge.alt}
+                            width="88"
+                            height="31"
+                            class="image-rendering-pixelated"
+                        />
+                    ) : (
+                        <span class="flex h-[31px] w-[88px] items-center justify-center border border-gray-300 dark:border-gray-700 bg-[var(--bg)] text-[8px] font-bold tracking-wide text-[var(--text)]">
+                            {badge.alt}
+                        </span>
+                    )}
+                </a>
+            </li>
+        ))
+    }
+</ul>

@@ -3,7 +3,6 @@ import { getCollection } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Header from "../components/Header.astro";
 import LastFM from "../components/LastFM.astro";
-import BadgeMarquee from "../components/BadgeMarquee.astro";
 
 const latestPosts = (await getCollection("blog"))
     .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
@@ -19,7 +18,7 @@ const latestProjects = (await getCollection("projects"))
         <Header />
         <main class="py-8">
             <div
-                class="flex flex-col sm:flex-row items-center gap-4 mb-8 text-center sm:text-left"
+                class="flex flex-col sm:flex-row items-center gap-4 mb-6 text-center sm:text-left"
             >
                 <img
                     src="/images/pfp.jpg"
@@ -45,18 +44,7 @@ const latestProjects = (await getCollection("projects"))
             </p>
 
             <section
-                class="mt-16 grid grid-cols-1 sm:grid-cols-2 gap-8 items-start"
-            >
-                <div class="min-w-0">
-                    <LastFM />
-                </div>
-                <div class="min-w-0">
-                    <BadgeMarquee />
-                </div>
-            </section>
-
-            <section
-                class="mt-16 pt-16 border-t border-gray-300 dark:border-gray-800"
+                class="mt-10 pt-8 border-t border-gray-300 dark:border-gray-800"
             >
                 <div class="flex items-center justify-between mb-4">
                     <h2 class="text-2xl font-bold underline underline-offset-8">Blogs</h2>
@@ -66,7 +54,7 @@ const latestProjects = (await getCollection("projects"))
                         >see all&rarr;</a
                     >
                 </div>
-                <ul class="space-y-6">
+                <ul class="space-y-4">
                     {
                         latestPosts.map((post) => (
                             <li>
@@ -103,7 +91,7 @@ const latestProjects = (await getCollection("projects"))
             </section>
 
             <section
-                class="mt-16 pt-16 border-t border-gray-300 dark:border-gray-800"
+                class="mt-10 pt-8 border-t border-gray-300 dark:border-gray-800"
             >
                 <div class="flex items-center justify-between mb-4">
                     <h2 class="text-2xl font-bold underline underline-offset-8">Projects</h2>
@@ -113,7 +101,7 @@ const latestProjects = (await getCollection("projects"))
                         >see all&rarr;</a
                     >
                 </div>
-                <ul class="space-y-6">
+                <ul class="space-y-4">
                     {
                         latestProjects.map((project) => (
                             <li>
@@ -137,7 +125,7 @@ const latestProjects = (await getCollection("projects"))
             </section>
 
             <section
-                class="mt-16 pt-16 border-t border-gray-300 dark:border-gray-800"
+                class="mt-10 pt-8 border-t border-gray-300 dark:border-gray-800"
             >
                 <h2 class="text-2xl font-bold mb-4 underline underline-offset-8">
                     Experiences
@@ -149,6 +137,28 @@ const latestProjects = (await getCollection("projects"))
                         class="text-[var(--accent)] hover:underline">resume</a
                     >.
                 </p>
+            </section>
+
+            <section
+                class="mt-10 grid grid-cols-1 sm:grid-cols-2 gap-6 items-start"
+            >
+                <div class="min-w-0">
+                    <LastFM />
+                </div>
+                <div class="min-w-0">
+                    <div class="flex flex-col items-center sm:items-end">
+                        <p
+                            class="text-[10px] uppercase tracking-widest text-[var(--text-muted)] mb-[5px]"
+                        >
+                            Visitor count
+                        </p>
+                        <img
+                            id="visitors-counter"
+                            src="https://count.getloli.com/@bys-site?name=bys-site&theme=original-new&padding=4&offset=0&align=top&scale=0.5&pixelated=1&darkmode=auto"
+                            alt="Visitors counter"
+                        />
+                    </div>
+                </div>
             </section>
         </main>
     </div>

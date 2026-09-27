@@ -8,6 +8,7 @@ const { title, showFooterRedirect = true } = Astro.props;
 const isHome = Astro.url.pathname === "/";
 import "../styles/global.css";
 import CustomCursor from "../components/CustomCursor.astro";
+import BadgeRow from "../components/BadgeRow.astro";
 ---
 
 <!doctype html>
@@ -40,35 +41,7 @@ import CustomCursor from "../components/CustomCursor.astro";
                     </a>
                 )
             }
-            {
-                isHome && (
-                    <div class="mt-6 flex flex-col items-center">
-                        <p
-                            class="text-[10px] uppercase tracking-widest text-[var(--text-muted)] mb-[5px]"
-                        >
-                            Visitor count
-                        </p>
-                        <img
-                            id="visitors-counter"
-                            src="https://count.getloli.com/@bys-site?name=bys-site&theme=original-new&padding=4&offset=0&align=top&scale=0.5&pixelated=1&darkmode=auto"
-                            alt="Visitors counter"
-                        />
-                    </div>
-                )
-            }
-            <p
-                class="mt-4 text-[10px] uppercase tracking-widest text-[var(--text-muted)]"
-            >
-                Maomao cursors by
-                <a
-                    href="http://www.rw-designer.com/cursor-set/maomao"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="hover:text-[var(--accent)]"
-                    >PandoraBonf</a
-                >
-                (CC-BY)
-            </p>
+            {isHome && <BadgeRow />}
         </footer>
         <CustomCursor />
     </body>

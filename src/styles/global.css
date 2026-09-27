@@ -71,6 +71,13 @@
     color: var(--accent);
 }
 
+/* 88x31 buttons: keep pixel-art crisp, never blurred */
+img[src*="badges/"],
+img[src*="88x31"],
+.image-rendering-pixelated {
+    image-rendering: pixelated;
+}
+
 a:hover {
     text-decoration-style: dashed;
 }
