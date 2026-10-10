@@ -8,6 +8,7 @@ const { title, showFooterRedirect = true } = Astro.props;
 const isHome = Astro.url.pathname === "/";
 import "../styles/global.css";
 import CustomCursor from "../components/CustomCursor.astro";
+import ScrollTop from "../components/ScrollTop.astro";
 import BadgeRow from "../components/BadgeRow.astro";
 ---
 
@@ -44,6 +45,7 @@ import BadgeRow from "../components/BadgeRow.astro";
             {isHome && <BadgeRow />}
         </footer>
         <CustomCursor />
+        <ScrollTop />
     </body>
 </html>
 

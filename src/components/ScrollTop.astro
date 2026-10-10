@@ -1,0 +1,138 @@
+---
+---
+
+<!-- Peek-out "back to top" mascot. Lives in the bottom-right corner clipped by
+     the viewport edge so she looks like she broke into the screen, and slides
+     up once you scroll past half a screen. -->
+<button
+    type="button"
+    id="scroll-top-ado"
+    aria-label="Back to top"
+    title="Back to top"
+>
+    <span class="peek-label" aria-hidden="true">
+        <span class="peek-arrow">&uarr;</span>
+        scroll to top
+    </span>
+    <img src="/images/ado.png" alt="" width="710" height="751" decoding="async" />
+</button>
+
+<style>
+    /* Hidden: fully below the bottom edge, so hiding slides her all the way out
+       instead of being cut off mid-way. Eased *in* on the way down — the
+       overshoot curve used for the entrance would fling her off-screen in the
+       first few frames, which reads as her just blinking out. */
+    #scroll-top-ado {
+        position: fixed;
+        right: 0;
+        bottom: 0;
+        z-index: 40;
+        display: block;
+        padding: 0;
+        border: 0;
+        background: none;
+        cursor: pointer;
+        transform: translateY(100%);
+        visibility: hidden;
+        transition:
+            transform 380ms cubic-bezier(0.4, 0, 1, 1),
+            visibility 0s linear 380ms;
+    }
+
+    /* Shown: pops up past her resting spot and settles back (back-out). */
+    #scroll-top-ado.is-visible {
+        transform: translateY(0);
+        visibility: visible;
+        transition:
+            transform 550ms cubic-bezier(0.34, 1.56, 0.64, 1),
+            visibility 0s;
+    }
+
+    #scroll-top-ado img {
+        display: block;
+        width: clamp(110px, 14vw, 195px);
+        height: auto;
+    }
+
+    #scroll-top-ado:hover img {
+        filter: brightness(1.1);
+    }
+
+    /* Pill label beside her at head height. Absolute so it never widens the hit
+       area that pokes above the viewport edge. */
+    .peek-label {
+        --pill-line: rgb(209 213 219);
+        position: absolute;
+        right: 100%;
+        top: 16%;
+        margin-right: 0.6rem;
+        display: flex;
+        align-items: center;
+        gap: 0.35rem;
+        padding: 0.3rem 0.6rem;
+        border: 1px solid var(--pill-line);
+        border-radius: 999px;
+        font-size: 10px;
+        line-height: 1;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        white-space: nowrap;
+        color: var(--text-muted);
+        background: var(--bg);
+        transition: color 300ms;
+    }
+
+    .dark .peek-label {
+        --pill-line: rgb(55 65 81);
+    }
+
+    /* Arrow sits on the character side of the pill, nearest her. */
+    .peek-arrow {
+        display: inline-block;
+        font-size: 11px;
+        line-height: 1;
+        transform: translateY(-0.5px);
+        transition: transform 300ms;
+    }
+
+    #scroll-top-ado:hover .peek-label {
+        color: var(--accent);
+    }
+
+    #scroll-top-ado:hover .peek-arrow {
+        transform: translateY(-2.5px);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        #scroll-top-ado {
+            transition: none;
+        }
+    }
+</style>
+
+<script>
+    const btn = document.getElementById("scroll-top-ado") as HTMLButtonElement | null;
+
+    if (btn) {
+        const reduce = window.matchMedia(
+            "(prefers-reduced-motion: reduce)",
+        ).matches;
+
+        // No rAF guard here on purpose: it stalls in hidden tabs, and browsers
+        // already coalesce scroll events to one per frame.
+        const update = () => {
+            btn.classList.toggle(
+                "is-visible",
+                window.scrollY > window.innerHeight * 0.5,
+            );
+        };
+
+        window.addEventListener("scroll", update, { passive: true });
+
+        btn.addEventListener("click", () => {
+            window.scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" });
+        });
+
+        update();
+    }
+</script>
