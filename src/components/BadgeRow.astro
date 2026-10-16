@@ -1,9 +1,16 @@
 ---
+const snippet = `<a href="https://bys-exe.github.io/"><img src="https://bys-exe.github.io/badges/bys-button.gif" alt="bys" width="88" height="31"></a>`;
+
 const badges = [
     {
         href: "https://bys-exe.github.io/",
         alt: "bys_exe",
-        src: "/badges/bys-button.gif",
+        src: "https://bys-exe.github.io/badges/bys-button.gif",
+    },
+    {
+        href: "https://mxrza.xyz/",
+        alt: "realmxrza",
+        src: "https://mxrza.xyz/mxrza.gif",
     },
     {
         href: "https://catppuccin.com/",
@@ -13,36 +20,139 @@ const badges = [
     {
         href: "https://zen-browser.app/",
         alt: "Zen Browser",
-        src: "/badges/zen-button.png",
+        src: "https://bys-exe.github.io/badges/zen-button.png",
     },
 ];
 ---
 
-<ul class="flex flex-wrap items-center justify-center gap-3">
-    {
-        badges.map((badge) => (
-            <li class="shrink-0">
-                <a
-                    href={badge.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    title={badge.alt}
-                >
-                    {badge.src ? (
-                        <img
-                            src={badge.src}
-                            alt={badge.alt}
-                            width="88"
-                            height="31"
-                            class="image-rendering-pixelated"
-                        />
-                    ) : (
-                        <span class="flex h-[31px] w-[88px] items-center justify-center border border-gray-300 dark:border-gray-700 bg-[var(--bg)] text-[8px] font-bold tracking-wide text-[var(--text)]">
-                            {badge.alt}
-                        </span>
-                    )}
-                </a>
-            </li>
-        ))
-    }
-</ul>
+<div class="flex flex-col items-center gap-2">
+    <ul class="flex flex-wrap items-center justify-center gap-3">
+        {
+            badges.map((badge) => (
+                <li class="shrink-0">
+                    <a
+                        href={badge.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        title={badge.alt}
+                    >
+                        {badge.src ? (
+                            <img
+                                src={badge.src}
+                                alt={badge.alt}
+                                width="88"
+                                height="31"
+                                class="image-rendering-pixelated"
+                            />
+                        ) : (
+                            <span class="flex h-[31px] w-[88px] items-center justify-center border border-gray-300 dark:border-gray-700 bg-[var(--bg)] text-[8px] font-bold tracking-wide text-[var(--text)]">
+                                {badge.alt}
+                            </span>
+                        )}
+                    </a>
+                </li>
+            ))
+        }
+    </ul>
+    <button
+        id="add-button-open"
+        type="button"
+        class="text-[10px] uppercase tracking-widest text-[var(--text-muted)] hover:text-[var(--accent)] transition-colors"
+    >
+        add my button to your site!
+    </button>
+</div>
+
+<dialog
+    id="add-button-dialog"
+    class="m-auto rounded-lg border border-gray-300 dark:border-gray-700 bg-[var(--bg)] text-[var(--text)] p-0 max-w-[90vw]"
+>
+    <div class="relative p-5 pt-10 w-[min(480px,90vw)]">
+        <button
+            id="add-button-close"
+            type="button"
+            aria-label="Close"
+            class="absolute top-2 right-2 p-2 text-[var(--text-muted)] hover:text-[var(--accent)] transition-colors"
+        >
+            <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="w-4 h-4"
+                aria-hidden="true"
+            >
+                <path d="M18 6 6 18" />
+                <path d="m6 6 12 12" />
+            </svg>
+        </button>
+        <p class="text-sm font-semibold mb-3">add my button to your site!</p>
+        <pre
+            class="text-xs overflow-x-auto rounded-md border border-gray-300 dark:border-gray-700 bg-[#e4e4e4] dark:bg-[#181825] p-3 mb-3 whitespace-pre-wrap break-all">{snippet}</pre>
+        <button
+            id="add-button-copy"
+            type="button"
+            class="px-4 py-1.5 text-sm font-semibold rounded-lg bg-[var(--accent)] text-[#1e1e2e] hover:opacity-80 transition-opacity"
+        >
+            Copy
+        </button>
+    </div>
+</dialog>
+
+<script is:inline data-snippet={snippet}>
+    (function () {
+        function init() {
+            var openBtn = document.getElementById("add-button-open");
+            var dialog = document.getElementById("add-button-dialog");
+            var closeBtn = document.getElementById("add-button-close");
+            var copyBtn = document.getElementById("add-button-copy");
+            if (!openBtn || !dialog || !closeBtn || !copyBtn) return;
+            if (openBtn.dataset.bound) return;
+            openBtn.dataset.bound = "1";
+            var snippet =
+                document.currentScript.getAttribute("data-snippet") || "";
+
+        openBtn.addEventListener("click", function () {
+            if (typeof dialog.showModal === "function") {
+                dialog.showModal();
+            }
+        });
+        closeBtn.addEventListener("click", function () {
+            dialog.close();
+        });
+        dialog.addEventListener("click", function (e) {
+            if (e.target === dialog) dialog.close();
+        });
+        copyBtn.addEventListener("click", function () {
+            function done() {
+                copyBtn.textContent = "Copied!";
+                setTimeout(function () {
+                    copyBtn.textContent = "Copy";
+                }, 2000);
+            }
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard
+                    .writeText(snippet)
+                    .then(done)
+                    .catch(function () {});
+            } else {
+                var ta = document.createElement("textarea");
+                ta.value = snippet;
+                document.body.appendChild(ta);
+                ta.select();
+                try {
+                    document.execCommand("copy");
+                    done();
+                } catch (err) {}
+                document.body.removeChild(ta);
+            }
+        });
+        }
+
+        document.addEventListener("astro:page-load", init);
+        init();
+    })();
+</script>
