@@ -1,23 +1,33 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Header from "../components/Header.astro";
-import Comments from "../components/Comments.astro";
 ---
 
 <BaseLayout title="Guestbook - Yuga Sai" showFooterRedirect={true}>
     <div class="max-w-2xl mx-auto px-4">
         <Header />
         <main class="py-8">
-            <h1 class="text-2xl sm:text-3xl font-bold mb-4">Guestbook</h1>
-            <p class="mb-4 text-gray-600 dark:text-gray-400">
-                WAIT- Before you go, leave a message in the guestbook!
+            <div
+                class="rounded-lg border border-gray-300 dark:border-gray-800 overflow-hidden"
+            >
+                <iframe
+                    src="https://bys.atabook.org"
+                    title="Guestbook"
+                    class="w-full block"
+                    style="height: 640px; border: 0;"
+                    loading="lazy"
+                ></iframe>
+            </div>
+            <p class="mt-2 text-sm text-gray-500">
+                Prefer it full-page? Sign it directly at{" "}
+                <a
+                    href="https://bys.atabook.org"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="text-[var(--accent)] hover:underline"
+                    >bys.atabook.org</a
+                >.
             </p>
-
-            <Comments
-                reactionsEnabled={false}
-                category="Comments"
-                categoryId="DIC_kwDOTJwhRc4DGS5M"
-            />
         </main>
     </div>
 </BaseLayout>
