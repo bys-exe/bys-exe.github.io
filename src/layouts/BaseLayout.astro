@@ -2,9 +2,10 @@
 interface Props {
     title: string;
     showFooterRedirect?: boolean;
+    forceLight?: boolean;
 }
 
-const { title, showFooterRedirect = true } = Astro.props;
+const { title, showFooterRedirect = true, forceLight = false } = Astro.props;
 const isHome = Astro.url.pathname === "/";
 import "../styles/global.css";
 import CustomCursor from "../components/CustomCursor.astro";
@@ -18,11 +19,15 @@ import BadgeRow from "../components/BadgeRow.astro";
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/images/pfp.jpg" />
-        <script is:inline>
-            if (localStorage.theme !== "light") {
-                document.documentElement.classList.add("dark");
-            }
-        </script>
+        {
+            !forceLight && (
+                <script is:inline>
+                    if (localStorage.theme !== "light") {
+                        document.documentElement.classList.add("dark");
+                    }
+                </script>
+            )
+        }
         <title>{title}</title>
     </head>
     <body
@@ -31,19 +36,21 @@ import BadgeRow from "../components/BadgeRow.astro";
         <div class="flex-1">
             <slot />
         </div>
-        <footer class="max-w-2xl mx-auto px-4 py-8 border-t border-gray-200 dark:border-gray-800 text-center">
-            {
-                showFooterRedirect && (
-                    <a
-                        href="/"
-                        class="text-sm text-gray-500 hover:text-[var(--accent)]"
-                    >
-                        ← Back to Home
-                    </a>
-                )
-            }
-            {isHome && <BadgeRow />}
-        </footer>
+        {
+            (showFooterRedirect || isHome) && (
+                <footer class="max-w-2xl mx-auto px-4 py-8 border-t border-gray-200 dark:border-gray-800 text-center">
+                    {showFooterRedirect && (
+                        <a
+                            href="/"
+                            class="text-sm text-gray-500 hover:text-[var(--accent)]"
+                        >
+                            ← Back to Home
+                        </a>
+                    )}
+                    {isHome && <BadgeRow />}
+                </footer>
+            )
+        }
         <CustomCursor />
         <ScrollTop />
     </body>

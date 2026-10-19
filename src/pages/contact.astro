@@ -3,7 +3,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import Header from "../components/Header.astro";
 ---
 
-<BaseLayout title="Contact - Yuga Sai" showFooterRedirect={true}>
+<BaseLayout title="contact - yuga" showFooterRedirect={true}>
     <div class="max-w-2xl mx-auto px-4">
         <Header />
         <main class="py-8">
@@ -258,7 +258,7 @@ import Header from "../components/Header.astro";
             });
             const result = await res.json();
             if (result.success) {
-                status.textContent = "Message sent — I'll get back to you!";
+                status.textContent = "Message sent - I'll get back to you!";
                 form.reset();
             } else {
                 status.textContent =

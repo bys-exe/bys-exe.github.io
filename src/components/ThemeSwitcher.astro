@@ -1,5 +1,14 @@
+---
+interface Props {
+    persistTheme?: boolean;
+}
+
+const { persistTheme = true } = Astro.props;
+---
+
 <button
     id="theme-toggle"
+    data-persist={persistTheme ? "true" : "false"}
     class="p-2 rounded-full transition-colors duration-300"
 >
     <!-- Sun icon (visible in Dark mode) -->
@@ -43,6 +52,7 @@
     const html = document.documentElement;
     const sunIcon = document.getElementById("sun-icon");
     const moonIcon = document.getElementById("moon-icon");
+    const persist = button.dataset.persist !== "false";
 
     function updateIcons() {
         if (html.classList.contains("dark")) {
@@ -57,10 +67,12 @@
     button.addEventListener("click", () => {
         const toggle = () => {
             html.classList.toggle("dark");
-            localStorage.setItem(
-                "theme",
-                html.classList.contains("dark") ? "dark" : "light",
-            );
+            if (persist) {
+                localStorage.setItem(
+                    "theme",
+                    html.classList.contains("dark") ? "dark" : "light",
+                );
+            }
             updateIcons();
         };
         if (document.startViewTransition) {

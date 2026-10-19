@@ -1,4 +1,9 @@
 ---
+interface Props {
+    persistTheme?: boolean;
+}
+
+const { persistTheme = true } = Astro.props;
 import ThemeSwitcher from "./ThemeSwitcher.astro";
 ---
 
@@ -35,7 +40,7 @@ import ThemeSwitcher from "./ThemeSwitcher.astro";
                     <circle cx="5" cy="19" r="1" />
                 </svg>
             </a>
-            <ThemeSwitcher />
+            <ThemeSwitcher persistTheme={persistTheme} />
         </div>
     </div>
 </header>

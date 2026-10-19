@@ -40,6 +40,7 @@ const badges = [
                         target="_blank"
                         rel="noopener noreferrer"
                         title={badge.alt}
+                        class="inline-block transition-transform duration-150 ease-out hover:relative hover:z-10 hover:scale-[1.35] focus-visible:relative focus-visible:z-10 focus-visible:scale-[1.35]"
                     >
                         {badge.src ? (
                             <img
@@ -70,9 +71,24 @@ const badges = [
 
 <dialog
     id="add-button-dialog"
-    class="m-auto rounded-lg border border-gray-300 dark:border-gray-700 bg-[var(--bg)] text-[var(--text)] p-0 max-w-[90vw]"
+    class="m-auto overflow-visible rounded-lg border border-gray-300 dark:border-gray-700 bg-[var(--bg)] text-[var(--text)] p-0 max-w-[90vw]"
 >
     <div class="relative p-5 pt-10 w-[min(480px,90vw)]">
+        <!-- little mascots popping out of the popup edges -->
+        <img
+            src="/images/popup-chibi-tumbling.png"
+            alt=""
+            aria-hidden="true"
+            draggable="false"
+            class="pointer-events-none select-none absolute bottom-full left-3 w-20 sm:w-28 translate-y-[20%]"
+        />
+        <img
+            src="/images/popup-chibi.png"
+            alt=""
+            aria-hidden="true"
+            draggable="false"
+            class="pointer-events-none select-none absolute top-full right-12 w-16 sm:w-24 -translate-y-[25%]"
+        />
         <button
             id="add-button-close"
             type="button"

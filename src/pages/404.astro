@@ -1,0 +1,27 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Header from "../components/Header.astro";
+---
+
+<BaseLayout title="404 - yuga" showFooterRedirect={false} forceLight>
+    <div class="max-w-2xl mx-auto px-4">
+        <Header persistTheme={false} />
+        <main class="py-8 flex flex-col items-center text-center">
+            <img
+                src="/images/404-cry.png"
+                alt="Ado crying"
+                class="w-48 sm:w-64 h-auto"
+            />
+            <h1 class="text-2xl sm:text-3xl font-bold mt-8">error 404</h1>
+            <p class="text-[var(--text-muted)] mt-3">page doesn't exist</p>
+            <a href="/" class="text-[var(--accent)] hover:underline mt-8">
+                ← back to home
+            </a>
+        </main>
+    </div>
+    <p
+        class="fixed bottom-3 left-4 text-[10px] tracking-wide text-[var(--text)]/30 select-none pointer-events-none"
+    >
+        yes, i know the page is in white theme, it's intended
+    </p>
+</BaseLayout>
