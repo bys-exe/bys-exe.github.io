@@ -8,7 +8,11 @@ const projects = (await getCollection("projects")).sort(
 );
 ---
 
-<BaseLayout title="projects - yuga" showFooterRedirect={true}>
+<BaseLayout
+    title="projects - yuga"
+    showFooterRedirect={true}
+    description="Projects by yuga — things I've built and tinkered with."
+>
     <div class="max-w-2xl mx-auto px-4">
         <Header />
         <main class="py-8">

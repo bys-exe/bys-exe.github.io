@@ -3,7 +3,11 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import Header from "../components/Header.astro";
 ---
 
-<BaseLayout title="guestbook - yuga" showFooterRedirect={true}>
+<BaseLayout
+    title="guestbook - yuga"
+    showFooterRedirect={true}
+    description="Sign yuga's guestbook and leave a message!"
+>
     <div class="max-w-2xl mx-auto px-4">
         <Header />
         <main class="py-8">

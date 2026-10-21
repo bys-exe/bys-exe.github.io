@@ -18,6 +18,10 @@ const { Content } = await render(project);
 <BaseLayout
     title={`${project.data.title} - yuga`}
     showFooterRedirect={true}
+    description={project.data.description}
+    ogTitle={project.data.title}
+    type="article"
+    image={project.data.screenshots?.[0]}
 >
     <div class="max-w-2xl mx-auto px-4">
         <Header />

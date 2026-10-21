@@ -8,7 +8,11 @@ const posts = (await getCollection("blog")).sort(
 );
 ---
 
-<BaseLayout title="blog - yuga" showFooterRedirect={true}>
+<BaseLayout
+    title="blog - yuga"
+    showFooterRedirect={true}
+    description="Blog posts by yuga — programming, compilers and whatever I'm learning."
+>
     <div class="max-w-2xl mx-auto px-4">
         <Header />
         <main class="py-8">

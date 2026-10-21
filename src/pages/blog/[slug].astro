@@ -16,7 +16,15 @@ const { post } = Astro.props;
 const { Content } = await render(post);
 ---
 
-<BaseLayout title={`${post.data.title} - yuga`} showFooterRedirect={true}>
+<BaseLayout
+    title={`${post.data.title} - yuga`}
+    showFooterRedirect={true}
+    description={post.data.description}
+    ogTitle={post.data.title}
+    type="article"
+    image={post.data.heroImage ?? `/og/${post.id}.png`}
+    imageAlt={`${post.data.title} — a blog post by yuga`}
+>
     <div class="max-w-2xl mx-auto px-4">
         <Header />
         <main class="py-8">

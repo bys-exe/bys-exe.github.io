@@ -3,10 +3,27 @@ interface Props {
     title: string;
     showFooterRedirect?: boolean;
     forceLight?: boolean;
+    description?: string;
+    image?: string;
+    imageAlt?: string;
+    type?: "website" | "article";
+    ogTitle?: string;
 }
 
-const { title, showFooterRedirect = true, forceLight = false } = Astro.props;
+const {
+    title,
+    showFooterRedirect = true,
+    forceLight = false,
+    description = "Welcome to my little corner of the internet! Computer science student and developer.",
+    image = "/images/og-card.png",
+    imageAlt = "Batchu yuga sai — computer science student and developer",
+    type = "website",
+    ogTitle = title,
+} = Astro.props;
 const isHome = Astro.url.pathname === "/";
+const site = Astro.site ?? new URL(Astro.url.origin);
+const canonical = new URL(Astro.url.pathname, site);
+const ogImage = new URL(image, site);
 import "../styles/global.css";
 import CustomCursor from "../components/CustomCursor.astro";
 import ScrollTop from "../components/ScrollTop.astro";
@@ -18,6 +35,25 @@ import BadgeRow from "../components/BadgeRow.astro";
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="description" content={description} />
+        <link rel="canonical" href={canonical.href} />
+        <meta property="og:site_name" content="yuga" />
+        <meta property="og:type" content={type} />
+        <meta property="og:title" content={ogTitle} />
+        <meta property="og:description" content={description} />
+        <meta property="og:url" content={canonical.href} />
+        <meta property="og:image" content={ogImage.href} />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta
+            property="og:image:alt"
+            content={imageAlt}
+        />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={ogTitle} />
+        <meta name="twitter:description" content={description} />
+        <meta name="twitter:image" content={ogImage.href} />
+        <meta name="theme-color" content="#1e1e2e" />
         <link rel="icon" href="/images/pfp.jpg" />
         {
             !forceLight && (
