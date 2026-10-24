@@ -7,41 +7,17 @@ const { persistTheme = true } = Astro.props;
 import ThemeSwitcher from "./ThemeSwitcher.astro";
 ---
 
-<header class="flex justify-center items-center px-4 py-6">
-    <div class="flex flex-col sm:flex-row items-center gap-3 sm:gap-4 md:gap-6">
-        <nav class="flex flex-wrap justify-center gap-x-3 gap-y-2 text-sm sm:text-base md:gap-x-5">
-            <a href="/" class="hover:text-[var(--accent)]">Home</a>
-            <a href="/about" class="hover:text-[var(--accent)]">About</a>
-            <a href="/projects" class="hover:text-[var(--accent)]">Projects</a>
-            <a href="/blog" class="hover:text-[var(--accent)]">Blog</a>
-            <a href="/gallery" class="hover:text-[var(--accent)]">Gallery</a>
-            <a href="/guestbook" class="hover:text-[var(--accent)]">Guestbook</a>
-            <a href="/contact" class="hover:text-[var(--accent)]">Contact</a>
-        </nav>
-        <div class="flex items-center gap-2">
-            <a
-                href="/index.xml"
-                title="RSS feed"
-                aria-label="RSS feed"
-                class="p-2 rounded-full transition-colors duration-300"
-            >
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    class="w-6 h-6 text-[var(--accent)]"
-                    aria-hidden="true"
-                >
-                    <path d="M4 11a9 9 0 0 1 9 9" />
-                    <path d="M4 4a16 16 0 0 1 16 16" />
-                    <circle cx="5" cy="19" r="1" />
-                </svg>
-            </a>
-            <ThemeSwitcher persistTheme={persistTheme} />
-        </div>
+<header class="relative flex flex-col sm:flex-row sm:justify-center items-center gap-3 sm:gap-4 px-4 py-6">
+    <nav class="flex flex-wrap justify-center gap-x-3 gap-y-2 text-sm sm:text-base md:gap-x-5">
+        <a href="/" class="hover:text-[var(--accent)]">Home</a>
+        <a href="/about" class="hover:text-[var(--accent)]">About</a>
+        <a href="/projects" class="hover:text-[var(--accent)]">Projects</a>
+        <a href="/blog" class="hover:text-[var(--accent)]">Blog</a>
+        <a href="/gallery" class="hover:text-[var(--accent)]">Gallery</a>
+        <a href="/guestbook" class="hover:text-[var(--accent)]">Guestbook</a>
+        <a href="/contact" class="hover:text-[var(--accent)]">Contact</a>
+    </nav>
+    <div class="flex items-center gap-2 sm:static md:absolute md:right-4 md:top-1/2 md:-translate-y-1/2">
+        <ThemeSwitcher persistTheme={persistTheme} />
     </div>
 </header>
