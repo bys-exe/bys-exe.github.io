@@ -23,4 +23,13 @@ export const collections = {
       screenshots: z.array(z.string()).optional(),
     }),
   }),
+  gallery: defineCollection({
+    loader: glob({ pattern: "**/*.md", base: "src/content/gallery" }),
+    schema: z.object({
+      title: z.string(),
+      description: z.string().optional(),
+      date: z.coerce.date().optional(),
+      cover: z.string().optional(),
+    }),
+  }),
 };

@@ -1,0 +1,74 @@
+---
+import { Image } from "astro:assets";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Header from "../../components/Header.astro";
+import { getAlbums } from "../../lib/gallery";
+
+const albums = await getAlbums();
+---
+
+<BaseLayout
+    title="gallery - yuga"
+    ogTitle="gallery"
+    showFooterRedirect={true}
+    description="A collection of memories and pictures I wanted to store."
+>
+    <Header />
+    <div class="max-w-4xl mx-auto px-4">
+        <main class="py-8">
+            <h1 class="text-2xl sm:text-3xl font-bold mb-4">Gallery</h1>
+            <p class="text-gray-600 dark:text-gray-400 mb-10">
+                This section of my site contains memories i wanted to
+                share :3
+            </p>
+
+            {
+                albums.length === 0 ? (
+                    <p class="text-gray-500">No albums yet.</p>
+                ) : (
+                    <ul class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        {albums.map((album, index) => (
+                            <li>
+                                <a
+                                    href={`/gallery/${album.slug}`}
+                                    class="group block rounded-lg border border-gray-300 dark:border-gray-800 overflow-hidden transition-colors hover:border-[var(--accent)]"
+                                >
+                                    <div class="aspect-[4/3] overflow-hidden bg-gray-100 dark:bg-gray-900">
+                                        <Image
+                                            src={album.cover.src}
+                                            alt={album.cover.alt}
+                                            widths={[400, 800]}
+                                            sizes="(min-width: 640px) 50vw, 100vw"
+                                            loading={
+                                                index === 0 ? "eager" : "lazy"
+                                            }
+                                            class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"
+                                        />
+                                    </div>
+                                    <div class="p-4">
+                                        <div class="flex items-baseline justify-between gap-3">
+                                            <h2 class="text-lg font-semibold transition-colors group-hover:text-[var(--accent)]">
+                                                {album.title}
+                                            </h2>
+                                            <span class="text-xs text-gray-500 shrink-0">
+                                                {album.photos.length}{" "}
+                                                {album.photos.length === 1
+                                                    ? "photo"
+                                                    : "photos"}
+                                            </span>
+                                        </div>
+                                        {album.description && (
+                                            <p class="text-sm text-gray-600 dark:text-gray-400 mt-2 line-clamp-2">
+                                                {album.description}
+                                            </p>
+                                        )}
+                                    </div>
+                                </a>
+                            </li>
+                        ))}
+                    </ul>
+                )
+            }
+        </main>
+    </div>
+</BaseLayout>

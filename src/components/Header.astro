@@ -7,17 +7,18 @@ const { persistTheme = true } = Astro.props;
 import ThemeSwitcher from "./ThemeSwitcher.astro";
 ---
 
-<header class="flex justify-center items-center py-6">
-    <div class="flex flex-col sm:flex-row items-center gap-3 sm:gap-6">
-        <nav class="flex flex-wrap justify-center gap-x-4 gap-y-2 text-sm sm:text-base">
+<header class="flex justify-center items-center px-4 py-6">
+    <div class="flex flex-col sm:flex-row items-center gap-3 sm:gap-4 md:gap-6">
+        <nav class="flex flex-wrap justify-center gap-x-3 gap-y-2 text-sm sm:text-base md:gap-x-5">
             <a href="/" class="hover:text-[var(--accent)]">Home</a>
             <a href="/about" class="hover:text-[var(--accent)]">About</a>
             <a href="/projects" class="hover:text-[var(--accent)]">Projects</a>
             <a href="/blog" class="hover:text-[var(--accent)]">Blog</a>
+            <a href="/gallery" class="hover:text-[var(--accent)]">Gallery</a>
             <a href="/guestbook" class="hover:text-[var(--accent)]">Guestbook</a>
             <a href="/contact" class="hover:text-[var(--accent)]">Contact</a>
         </nav>
-        <div class="sm:ml-4 flex items-center gap-2">
+        <div class="flex items-center gap-2">
             <a
                 href="/index.xml"
                 title="RSS feed"
