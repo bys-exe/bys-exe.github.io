@@ -62,7 +62,8 @@ const photoCount = `${album.photos.length} ${
                     {
                         album.date && (
                             <time datetime={album.date.toISOString()}>
-                                {album.date.toLocaleDateString("en-US", {
+                                {album.date.toLocaleDateString("en-GB", {
+                                    day: "numeric",
                                     month: "long",
                                     year: "numeric",
                                 })}
