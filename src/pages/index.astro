@@ -54,12 +54,18 @@ const latestProjects = (await getCollection("projects"))
                         >see all&rarr;</a
                     >
                 </div>
-                <ul class="space-y-4">
+                <ul class="space-y-1">
                     {
                         latestPosts.map((post) => (
                             <li>
-                                <div class="flex items-baseline justify-between gap-4">
-                                    <h3 class="text-lg sm:text-xl font-semibold">
+                                <div class="flex items-baseline gap-3">
+                                    <time
+                                        datetime={post.data.pubDate.toISOString()}
+                                        class="text-sm text-gray-500 shrink-0"
+                                    >
+                                        {post.data.pubDate.toISOString().slice(0, 10)}
+                                    </time>
+                                    <h3 class="text-base">
                                         <a
                                             href={`/blog/${post.id}`}
                                             class="hover:text-[var(--accent)] transition-colors"
@@ -67,23 +73,7 @@ const latestProjects = (await getCollection("projects"))
                                             {post.data.title}
                                         </a>
                                     </h3>
-                                    <time
-                                        datetime={post.data.pubDate.toISOString()}
-                                        class="text-sm text-gray-500 shrink-0"
-                                    >
-                                        {post.data.pubDate.toLocaleDateString(
-                                            "en-us",
-                                            {
-                                                year: "numeric",
-                                                month: "short",
-                                                day: "numeric",
-                                            },
-                                        )}
-                                    </time>
                                 </div>
-                                <p class="text-sm text-gray-600 dark:text-gray-400">
-                                    {post.data.description}
-                                </p>
                             </li>
                         ))
                     }
