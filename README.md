@@ -20,7 +20,8 @@ python scripts/optimize_gallery.py
 ```
 
 By default the script keeps the original format and resizes images so their
-longest side is at most 1600px. Use `--format webp` for smaller files:
+longest side is at most 1600px. It only replaces a file when the optimized
+version is smaller, so it is safe to re-run. Use `--format webp` for smaller files:
 
 ```bash
 python scripts/optimize_gallery.py --format webp --quality 82
