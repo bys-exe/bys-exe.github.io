@@ -28,6 +28,7 @@ import "../styles/global.css";
 import CustomCursor from "../components/CustomCursor.astro";
 import ScrollTop from "../components/ScrollTop.astro";
 import BadgeRow from "../components/BadgeRow.astro";
+import FriendsRow from "../components/FriendsRow.astro";
 ---
 
 <!doctype html>
@@ -83,7 +84,22 @@ import BadgeRow from "../components/BadgeRow.astro";
                             ← Back to Home
                         </a>
                     )}
-                    {isHome && <BadgeRow />}
+                    {isHome && (
+                        <>
+                            <BadgeRow />
+                            <div
+                                class="mt-7 flex flex-wrap items-center justify-between gap-x-4 gap-y-3 max-[900px]:pb-28"
+                            >
+                                <FriendsRow />
+                                <p
+                                    id="footer-copyright"
+                                    class="ml-auto text-right text-sm text-[var(--text-muted)]"
+                                >
+                                    © 2026 Batchu Yuga Sai
+                                </p>
+                            </div>
+                        </>
+                    )}
                 </footer>
             )
         }

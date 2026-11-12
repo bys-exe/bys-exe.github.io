@@ -1,0 +1,56 @@
+---
+const friends = [
+    {
+        name: "Mohit Samant",
+        href: "https://mohitsamant.me/",
+        avatar: "/friends/mohitsamant.jpg",
+    },
+    {
+        name: "xevrion",
+        href: "https://xevrion.dev/",
+        avatar: "/friends/xevrion.jpg",
+    },
+    {
+        name: "arnesh",
+        href: "https://arneshbanerjee.dev/",
+        avatar: "/friends/arnesh.jpg",
+    },
+    {
+        name: "Lyra",
+        href: "https://lyradossier.vercel.app/",
+        avatar: "/friends/lyra.jpg",
+    },
+];
+---
+
+<nav
+    aria-label="Friends"
+    class="flex flex-wrap items-center justify-start gap-3 text-left"
+>
+    <span class="shrink-0 text-sm text-[var(--text-muted)]">Friends:</span>
+    <ul class="flex flex-wrap items-center gap-0.5">
+        {
+            friends.map((friend) => (
+                <li>
+                    <a
+                        href={friend.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        title={friend.name}
+                        aria-label={friend.name}
+                        class="block h-8 w-8 overflow-hidden rounded-full border border-gray-300 transition-[transform,border-color] duration-150 ease-out hover:relative hover:z-10 hover:scale-[1.35] hover:border-[var(--accent)] focus-visible:relative focus-visible:z-10 focus-visible:scale-[1.35] focus-visible:border-[var(--accent)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--bg)] dark:border-gray-700"
+                    >
+                        <img
+                            src={friend.avatar}
+                            alt=""
+                            width="32"
+                            height="32"
+                            decoding="async"
+                            class="h-full w-full object-cover"
+                        />
+                    </a>
+                </li>
+            ))
+        }
+    </ul>
+</nav>
