@@ -1,0 +1,2 @@
+# Keep first-party Python maintenance scripts in GitHub's language stats.
+scripts/**/*.py linguist-detectable
