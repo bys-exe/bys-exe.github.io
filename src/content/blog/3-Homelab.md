@@ -6,9 +6,9 @@ pubDate: 2026-11-10
 
 This is an self-hosted homelab running on my old laptop which got repurposed as an home server. Built to replace google photos especially because of its 15gb limit and for privacy.
 
-im making this blog post for archiving what i did so dont expect any guide from me for this kek, the home labbing rabbit hole is really fun
+im making this blog post for archiving what i did so dont expect any guide from me for this kek, the home labbing rabbit hole is really fun so search away ur questions!
 
-## Why did i start doing this
+## Why did i do this
 
 I always saw youtube videos about self hosting and got interested in it. I have tons of personal photos (~150gb of photos) in my external hard drive and i wanted get access to them anywhere in my mobile/laptop like google photos so i turned laptop into an server :p
 
@@ -56,41 +56,33 @@ i got this laptop from my dad's office like 10 years ago (very old), it is an so
 
 ---
 
-## More about the services that i used (google definitions with my screenshots lol read if interested)
+## More about the services that i used
 
 ### Immich
 
-A full-featured, self-hosted photo and video backup solution. Replaces Google Photos completely.
+It is an google photos alternative which can be self hosted
+in our devices with all the features of google photos and
+even gives us some machine learning stuff to organize photos
+better. It even has backup techniques and is open source with constant updates from the community which is nice
 
-- Automatic mobile backup
-- Face recognition and person tagging (runs on-device via the ML container)
-- Smart search powered by CLIP embeddings
-- Timeline view, albums, shared libraries
-- Runs as 4 coordinated containers: server, machine learning, postgres, redis
+**Access:** i use `http://<server-ip>:2283` on local network, or via Tailscale IP if im elsewhere
 
-**Access:** `http://<server-ip>:2283` on local network, or via Tailscale IP from anywhere
+below is an screenshot of the homepage so u get an idea
 
 ![Immich Screenshot](./images/immich-1.png)
 
 ### Homepage Dashboard
 
-A clean, customizable dashboard that shows all running services in one place.
+This is like a hub of sorts like home assistant but with
+all the services we use. It has most of the things so its useful. We can know easily if something is down and it looks cool
 
-- Live status indicators for each service
-- Quick-access links to all self-hosted apps
-- Configured via YAML files
-
-**Access:** `http://<server-ip>:3000`
+**Access:** i use `http://<server-ip>:3000` or tailscale ip.
 
 ![Homepage Screenshot](./images/server-dashboard.png)
 
 ### Tailscale
 
-Tailscale creates a secure WireGuard-based mesh VPN between devices. This means the home server is reachable from anywhere — phone, laptop, college — without exposing any ports to the public internet.
-
-- No open ports on the home router
-- End-to-end encrypted traffic
-- Works behind CGNAT (most Indian ISPs (i hate you airtel))
+Tailscale acts like a vpn which lets me connect to my home internet from anywhere, i cannt set an static ip or port forward with my airtel router so this was a life saver :p I LOVE YOU TAILSCALE
 
 ---
 
